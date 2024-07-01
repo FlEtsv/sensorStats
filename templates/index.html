@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vehicle Data</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+<style>
+    body {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        background-color: #f5f5f5;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        flex-direction: column;
+    }
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        color: #4CAF50;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Añade sombra al texto */
+        transition: color 0.5s; /* Añade animación al color */
+    }
+    h1:hover {
+        color: #3e8e41; /* Cambia el color al pasar el ratón */
+    }
+    .data-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        max-width: 1200px;
+    }
+    .chart-card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Añade sombra a la tarjeta */
+        padding: 20px;
+        width: 250px;
+        text-align: center;
+        transition: box-shadow 0.5s; /* Añade animación a la sombra */
+    }
+    .chart-card:hover {
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Cambia la sombra al pasar el ratón */
+    }
+    .chart-card canvas {
+        margin-bottom: 10px;
+    }
+    p {
+        margin: 0;
+    }
+</style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Función para refrescar la página cada hora (3600000 ms)
+        function refreshPage() {
+            setInterval(() => {
+                location.reload();
+            }, 7200000); // 2 hora en milisegundos
+        }
+
+    // Función para crear una barra circular
+    function createCircularBar(ctx, label, value, maxValue) {
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [label],
+                datasets: [{
+                    label: label,
+                    data: [value, maxValue - value],
+                    backgroundColor: ['#4CAF50', '#e0e0e0'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                circumference: Math.PI,
+                rotation: Math.PI,
+                cutout: '30%', // Ajusta este valor para hacer el gráfico más circular
+                plugins: {
+                    tooltip: {
+                        enabled: false
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Datos traídos desde el servidor renderizados por Flask
+            const data = {
+                battery_voltage: {{ battery_voltage }},
+                autonomy: {{ autonomy }},
+                charging_mode: "{{ charging_mode }}",
+                charging_status: "{{ charging_status }}",
+                level: {{ level }},
+                air_temp: {{ air_temp }},
+                luminosity_day: "{{ luminosity_day }}",
+                acceleration: {{ acceleration }},
+                speed: {{ speed }},
+                preconditioning_status: "{{ preconditioning_status }}",
+                mileage: {{ mileage }}
+            };
+
+            // Crear barras circulares para los valores numéricos
+            createCircularBar(document.getElementById('batteryVoltageChart').getContext('2d'), 'Battery Voltage', data.battery_voltage, 100);
+            createCircularBar(document.getElementById('autonomyChart').getContext('2d'), 'Autonomy', data.autonomy, 500);
+            createCircularBar(document.getElementById('levelChart').getContext('2d'), 'Battery Level', data.level, 100);
+            createCircularBar(document.getElementById('airTempChart').getContext('2d'), 'Air Temp', data.air_temp, 50);
+            createCircularBar(document.getElementById('accelerationChart').getContext('2d'), 'Acceleration', data.acceleration, 10);
+            createCircularBar(document.getElementById('speedChart').getContext('2d'), 'Speed', data.speed, 200);
+            createCircularBar(document.getElementById('mileageChart').getContext('2d'), 'Mileage', data.mileage, 100000);
+        });
+    </script>
+</head>
+<body onload="refreshPage()">
+    <h1>Vehicle Data</h1>
+    <div class="data-container">
+        {% if error %}
+            <p>{{ error }}</p>
+        {% else %}
+            <div class="chart-card">
+                <canvas id="batteryVoltageChart"></canvas>
+                <p><strong>Battery Voltage:</strong> {{ battery_voltage }} V</p>
+            </div>
+            <div class="chart-card">
+                <canvas id="autonomyChart"></canvas>
+                <p><strong>Autonomy:</strong> {{ autonomy }} km</p>
+            </div>
+            <div class="chart-card">
+                <canvas id="levelChart"></canvas>
+                <p><strong>Battery Level:</strong> {{ level }} %</p>
+            </div>
+            <div class="chart-card">
+                <canvas id="airTempChart"></canvas>
+                <p><strong>Air Temperature:</strong> {{ air_temp }} °C</p>
+            </div>
+            <div class="chart-card">
+                <canvas id="accelerationChart"></canvas>
+                <p><strong>Acceleration:</strong> {{ acceleration }} m/s²</p>
+            </div>
+            <div class="chart-card">
+                <canvas id="speedChart"></canvas>
+                <p><strong>Speed:</strong> {{ speed }} km/h</p>
+            </div>
+            <div class="chart-card">
+                <canvas id="mileageChart"></canvas>
+                <p><strong>Mileage:</strong> {{ mileage }} km</p>
+            </div>
+            <div class="chart-card">
+                <p><strong>Charging Mode:</strong> {{ charging_mode }}</p>
+                <p><strong>Charging Status:</strong> {{ charging_status }}</p>
+                <p><strong>Luminosity Day:</strong> {{ luminosity_day }}</p>
+                <p><strong>Preconditioning Status:</strong> {{ preconditioning_status }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
