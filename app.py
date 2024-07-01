@@ -1,19 +1,15 @@
-# Importamos las librerías necesarias
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, session
 import requests
 
-# Creamos una instancia de la aplicación Flask
+# Configuración de la aplicación Flask
 app = Flask(__name__)
+app.secret_key = 'supersecretkey'  # Necesario para usar sesiones
 
 # Definimos una función para obtener los datos del vehículo
-def get_data():
-    # URL de la API desde la que obtenemos los datos
-    url = "http://192.168.1.16:5005/get_vehicleinfo/VR3UHZKXZPT573301?from_cache=1"
-    # URL de la API desde la que obtenemos los datos
-    #"http://192.168.1.16:5005/get_vehicleinfo/VR3UHZKXZPT573301?from_cache=1"
+def get_data(api_url):
     try:
         # Realizamos una petición GET a la API
-        response = requests.get(url)
+        response = requests.get(api_url)
         # Convertimos la respuesta a formato JSON
         data = response.json()
         # Devolvemos los datos
@@ -24,10 +20,16 @@ def get_data():
         return None
 
 # Definimos la ruta principal de la aplicación
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    # Obtenemos los datos del vehículo
-    data = get_data()
+    if request.method == 'POST':
+        # Guardamos la URL de la API en la sesión
+        session['api_url'] = request.form['api_url']
+        return redirect(url_for('index'))
+
+    # Obtenemos la URL de la API de la sesión
+    api_url = session.get('api_url', "http://192.168.1.16:5005/get_vehicleinfo/VR3UHZKXZPT573301?from_cache=1")
+    data = get_data(api_url)
     if data:
         # Extraemos los datos necesarios del JSON
         battery_voltage = data.get('battery', {}).get('voltage')
@@ -50,6 +52,7 @@ def index():
         # Renderizamos la plantilla index.html con los datos obtenidos
         return render_template(
             'index.html',
+            api_url=api_url,
             battery_voltage=battery_voltage,
             autonomy=autonomy,
             charging_mode=charging_mode,
@@ -64,9 +67,8 @@ def index():
         )
     else:
         # En caso de error, renderizamos la plantilla index.html con un mensaje de error
-        return render_template('index.html', error="Error obteniendo los datos. Por favor, inténtelo de nuevo más tarde.")
+        return render_template('index.html', error="Error obteniendo los datos. Por favor, inténtelo de nuevo más tarde.", api_url=api_url)
 
 # Comprobamos si el script se está ejecutando directamente
 if __name__ == '__main__':
-    # En caso afirmativo, ejecutamos la aplicación
     app.run(host='0.0.0.0', port=8080)
