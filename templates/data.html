@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historical Data</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Alinea elementos al inicio verticalmente */
+            min-height: 100vh;
+            flex-direction: row; /* Cambia a dirección de fila */
+        }
+        .content {
+            width: 80%; /* Ancho del contenido principal */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra contenido verticalmente */
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #358fd1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            transition: color 0.5s;
+        }
+        h1:hover {
+            color: #358fd1;
+        }
+        table {
+            width: 100%; /* Ancho completo de la tabla */
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+        .chart-container {
+            width: 80%; /* Ancho del contenedor de gráficos */
+            margin-top: 20px;
+        }
+        .chart {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+        .back-button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #358fd1;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #358fd1;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Historical Data for {{ data_type }}</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in data %}
+                <tr>
+                    <td>{{ entry.timestamp }}</td>
+                    <td>{{ entry.value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="chart-container">
+            <div class="chart">
+                <!-- Aquí iría tu gráfico, por ejemplo utilizando Chart.js -->
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
+        <div class="button-container">
+            <a href="/" class="back-button">Volver</a>
+        </div>
+    </div>
+
+    <!-- Script de Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Obtén los datos del servidor renderizados por Flask
+        const data = {{ data|tojson }};
+
+        //ordenar de fecha mas antigua a fecha mas reciente
+        data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+
+        // Extrae solo los valores de los datos, ignorando las fechas
+        const values = data.map(entry => entry.value);
+
+
+        // Crea el gráfico de barras
+        const ctx = document.getElementById('myChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Array(values.length).fill(''), // Etiquetas vacías ya que no queremos mostrar las fechas
+                datasets: [{
+                    label: '{{ data_type }}',
+                    data: values,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

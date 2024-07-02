@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicle Data</title>
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
-    <div id="loading" style="display: none;">
-    <div class="loader"></div>
-</div>
     <style>
         /* Estilos generales para la página */
         body {
@@ -23,12 +22,12 @@
         h1 {
             font-size: 2rem;
             margin-bottom: 20px;
-            color: #4CAF50;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Añade sombra al texto */
-            transition: color 0.5s; /* Añade animación al color */
+            color: #358fd1;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            transition: color 0.5s;
         }
         h1:hover {
-            color: #3e8e41; /* Cambia el color al pasar el ratón */
+            color: #358fd1;
         }
         .data-container {
             display: flex;
@@ -40,14 +39,15 @@
         .chart-card {
             background-color: #fff;
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Añade sombra a la tarjeta */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 20px;
             width: 250px;
             text-align: center;
-            transition: box-shadow 0.5s; /* Añade animación a la sombra */
+            transition: box-shadow 0.5s;
+            cursor: pointer;
         }
         .chart-card:hover {
-            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Cambia la sombra al pasar el ratón */
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
         .chart-card canvas {
             margin-bottom: 10px;
@@ -70,12 +70,12 @@
             font-size: 1rem;
             border: none;
             border-radius: 5px;
-            background-color: #4CAF50;
+            background-color: #358fd1;
             color: white;
             cursor: pointer;
         }
         .form-container button:hover {
-            background-color: #3e8e41;
+            background-color: #358fd1;
         }
         .loader {
             border: 16px solid #f3f3f3;
@@ -85,134 +85,70 @@
             height: 120px;
             animation: spin 2s linear infinite;
         }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        /* Estilos para los enlaces de datos */
+        .data-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .data-links a {
+            padding: 10px 20px;
+            background-color: #358fd1;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .data-links a:hover {
+            background-color: #358fd1;
+        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        // Función para refrescar la página cada 2 horas (7200000 ms)
-        function refreshPage() {
-            setInterval(() => {
-                location.reload();
-            }, 7200000); // 2 horas en milisegundos
-        }
-
-        // Función para crear una barra circular utilizando Chart.js
-        function createCircularBar(ctx, label, value, maxValue) {
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: [label],
-                    datasets: [{
-                        label: label,
-                        data: [value, maxValue - value],
-                        backgroundColor: ['#4CAF50', '#e0e0e0'],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    circumference: Math.PI,
-                    rotation: Math.PI,
-                    cutout: '95%', // Ajusta este valor para hacer el gráfico más circular
-                    plugins: {
-                        tooltip: {
-                            enabled: false
-                        },
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-        }
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    // Mostrar el mensaje de carga al inicio
-    document.getElementById('loading').style.display = 'block';
-
-    // Función para refrescar la página cada 2 horas (7200000 ms)
-    function refreshPage() {
-        setInterval(() => {
-            location.reload();
-        }, 7200000); // 2 horas en milisegundos
-    }
-
-    // Datos traídos desde el servidor renderizados por Flask
-    const data = {
-        battery_voltage: {{ battery_voltage }},
-        autonomy: {{ autonomy }},
-        charging_mode: "{{ charging_mode }}",
-        charging_status: "{{ charging_status }}",
-        level: {{ level }},
-        air_temp: {{ air_temp }},
-        luminosity_day: "{{ luminosity_day }}",
-        acceleration: {{ acceleration }},
-        speed: {{ speed }},
-        preconditioning_status: "{{ preconditioning_status }}",
-        mileage: {{ mileage }},
-    };
-
-    // Crear barras circulares para los valores numéricos
-    createCircularBar(document.getElementById('batteryVoltageChart').getContext('2d'), 'Battery Voltage', data.battery_voltage, 100);
-    createCircularBar(document.getElementById('autonomyChart').getContext('2d'), 'Autonomy', data.autonomy, 500);
-    createCircularBar(document.getElementById('levelChart').getContext('2d'), 'Battery Level', data.level, 100);
-    createCircularBar(document.getElementById('airTempChart').getContext('2d'), 'Air Temp', data.air_temp, 50);
-    createCircularBar(document.getElementById('accelerationChart').getContext('2d'), 'Acceleration', data.acceleration, 10);
-    createCircularBar(document.getElementById('speedChart').getContext('2d'), 'Speed', data.speed, 200);
-    createCircularBar(document.getElementById('mileageChart').getContext('2d'), 'Mileage', data.mileage, 100000);
-
-    // Ocultar el mensaje de carga después de cargar los datos
-    document.getElementById('loading').style.display = 'none';
-
-    // Ejecutar la función de refrescar la página
-    refreshPage();
-});
-
-    </script>
 </head>
 <body>
     <h1>Vehicle Data</h1>
-<div class="form-container">
-    <form method="POST" action="/connect" id="form">
-        <label for="ip_port">IP/Port:</label>
-        <input type="password" id="ip_port" name="ip_port" value="{{ ip_port }}" required>
-        <label for="vin">VIN:</label>
-        <input type="password" id="vin" name="vin" value="{{ vin }}" required>
-        <input type="submit" value="Conectar">
-    </form>
-</div>
+    <div class="form-container">
+        <form method="POST" action="/connect" id="form">
+            <label for="ip_port">IP/Port:</label>
+            <input type="password" id="ip_port" name="ip_port" value="{{ ip_port }}" required>
+            <label for="vin">VIN:</label>
+            <input type="password" id="vin" name="vin" value="{{ vin }}" required>
+            <input type="submit" value="Conectar">
+        </form>
+    </div>
     <div class="data-container">
         {% if error %}
             <p>{{ error }}</p>
         {% else %}
-            <div class="chart-card">
+            <div class="chart-card" onclick="navigateTo('/data/battery_voltage')">
                 <canvas id="batteryVoltageChart"></canvas>
                 <p><strong>Battery Voltage:</strong> {{ battery_voltage }} V</p>
             </div>
-            <div class="chart-card">
+            <div class="chart-card" onclick="navigateTo('/data/autonomy')">
                 <canvas id="autonomyChart"></canvas>
                 <p><strong>Autonomy:</strong> {{ autonomy }} km</p>
             </div>
-            <div class="chart-card">
+            <div class="chart-card" onclick="navigateTo('/data/level')">
                 <canvas id="levelChart"></canvas>
                 <p><strong>Battery Level:</strong> {{ level }} %</p>
             </div>
-            <div class="chart-card">
+            <div class="chart-card" onclick="navigateTo('/data/air_temp')">
                 <canvas id="airTempChart"></canvas>
                 <p><strong>Air Temperature:</strong> {{ air_temp }} °C</p>
             </div>
-            <div class="chart-card">
+            <div class="chart-card" onclick="navigateTo('/data/acceleration')">
                 <canvas id="accelerationChart"></canvas>
                 <p><strong>Acceleration:</strong> {{ acceleration }} m/s²</p>
             </div>
-            <div class="chart-card">
+            <div class="chart-card" onclick="navigateTo('/data/speed')">
                 <canvas id="speedChart"></canvas>
                 <p><strong>Speed:</strong> {{ speed }} km/h</p>
             </div>
-            <div class="chart-card">
+            <div class="chart-card" onclick="navigateTo('/data/mileage')">
                 <canvas id="mileageChart"></canvas>
                 <p><strong>Mileage:</strong> {{ mileage }} km</p>
             </div>
@@ -224,5 +160,97 @@ document.addEventListener('DOMContentLoaded', (event) => {
             </div>
         {% endif %}
     </div>
+    <div class="data-links">
+        <a href="/data/battery_voltage">Battery Voltage History</a>
+        <a href="/data/autonomy">Autonomy History</a>
+        <a href="/data/level">Battery Level History</a>
+        <a href="/data/air_temp">Air Temperature History</a>
+        <a href="/data/acceleration">Acceleration History</a>
+        <a href="/data/speed">Speed History</a>
+        <a href="/data/mileage">Mileage History</a>
+    </div>
+    <div id="loading" style="display: none;">
+        <div class="loader"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            try {
+                // Mostrar el mensaje de carga al inicio
+                document.getElementById('loading').style.display = 'block';
+
+                // Datos traídos desde el servidor renderizados por Flask
+                const data = {
+                    battery_voltage: {{ battery_voltage }},
+                    autonomy: {{ autonomy }},
+                    charging_mode: "{{ charging_mode }}",
+                    charging_status: "{{ charging_status }}",
+                    level: {{ level }},
+                    air_temp: {{ air_temp }},
+                    luminosity_day: "{{ luminosity_day }}",
+                    acceleration: {{ acceleration }},
+                    speed: {{ speed }},
+                    preconditioning_status: "{{ preconditioning_status }}",
+                    mileage: {{ mileage }},
+                };
+
+                // Crear barras circulares para los valores numéricos
+                createCircularBar(document.getElementById('batteryVoltageChart').getContext('2d'), 'Battery Voltage', data.battery_voltage, 100);
+                createCircularBar(document.getElementById('autonomyChart').getContext('2d'), 'Autonomy', data.autonomy, 500);
+                createCircularBar(document.getElementById('levelChart').getContext('2d'), 'Battery Level', data.level, 100);
+                createCircularBar(document.getElementById('airTempChart').getContext('2d'), 'Air Temp', data.air_temp, 50);
+                createCircularBar(document.getElementById('accelerationChart').getContext('2d'), 'Acceleration', data.acceleration, 10);
+                createCircularBar(document.getElementById('speedChart').getContext('2d'), 'Speed', data.speed, 200);
+                createCircularBar(document.getElementById('mileageChart').getContext('2d'), 'Mileage', data.mileage, 100000);
+
+                // Ocultar el mensaje de carga después de cargar los datos
+                document.getElementById('loading').style.display = 'none';
+
+                // Ejecutar la función de refrescar la página
+                refreshPage();
+            } catch (error) {
+                console.error('Error al crear los gráficos:', error);
+                // Ocultar el mensaje de carga si hay un error
+                document.getElementById('loading').style.display = 'none';
+            }
+        });
+
+        // Función para crear gráficos de barras circulares
+        function createCircularBar(ctx, label, value, max) {
+            return new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [label],
+                    datasets: [{
+                        label: label,
+                        data: [value, max - value],
+                        backgroundColor: ['#358fd1', '#f0f0f0'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutoutPercentage: 95,
+                    rotation: -Math.PI,
+                    circumference: Math.PI,
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    }
+                }
+            });
+        }
+
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
+        function refreshPage() {
+            setInterval(() => {
+                window.location.reload();
+            }, 7200000); // Refresh page every minute
+        }
+    </script>
 </body>
 </html>
