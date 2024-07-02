@@ -3,6 +3,9 @@
 <head>
     <title>Vehicle Data</title>
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <div id="loading" style="display: none;">
+    <div class="loader"></div>
+</div>
     <style>
         /* Estilos generales para la página */
         body {
@@ -74,6 +77,19 @@
         .form-container button:hover {
             background-color: #3e8e41;
         }
+        .loader {
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #3498db;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -100,7 +116,7 @@
                 options: {
                     circumference: Math.PI,
                     rotation: Math.PI,
-                    cutout: '30%', // Ajusta este valor para hacer el gráfico más circular
+                    cutout: '95%', // Ajusta este valor para hacer el gráfico más circular
                     plugins: {
                         tooltip: {
                             enabled: false
@@ -113,8 +129,11 @@
             });
         }
 
-        // Ejecutar después de que el DOM se haya cargado
         document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('loading').style.display = 'block';
+            refreshPage();
+
+
             // Datos traídos desde el servidor renderizados por Flask
             const data = {
                 battery_voltage: {{ battery_voltage }},
@@ -127,8 +146,10 @@
                 acceleration: {{ acceleration }},
                 speed: {{ speed }},
                 preconditioning_status: "{{ preconditioning_status }}",
-                mileage: {{ mileage }}
+                mileage: {{ mileage }},
+
             };
+            document.getElementById('loading').style.display = 'none';
 
             // Crear barras circulares para los valores numéricos
             createCircularBar(document.getElementById('batteryVoltageChart').getContext('2d'), 'Battery Voltage', data.battery_voltage, 100);
@@ -141,14 +162,17 @@
         });
     </script>
 </head>
-<body onload="refreshPage()">
+<body>
     <h1>Vehicle Data</h1>
-    <div class="form-container">
-        <form method="POST" action="/">
-            <input type="text" name="api_url" placeholder="Enter API URL" value="{{ api_url }}">
-            <button type="submit">Set API URL</button>
-        </form>
-    </div>
+<div class="form-container">
+    <form method="POST" action="/connect" id="form">
+        <label for="ip_port">IP/Port:</label>
+        <input type="password" id="ip_port" name="ip_port" value="{{ ip_port }}" required>
+        <label for="vin">VIN:</label>
+        <input type="password" id="vin" name="vin" value="{{ vin }}" required>
+        <input type="submit" value="Conectar">
+    </form>
+</div>
     <div class="data-container">
         {% if error %}
             <p>{{ error }}</p>

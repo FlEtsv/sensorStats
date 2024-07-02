@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8080
 
 # Define el comando por defecto para ejecutar la aplicación
-CMD ["gunicorn", "-b", "0.0.0.0:8080", "app:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:${PORT:-5006}", "app:app"]
