@@ -129,37 +129,48 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            document.getElementById('loading').style.display = 'block';
-            refreshPage();
+document.addEventListener('DOMContentLoaded', (event) => {
+    // Mostrar el mensaje de carga al inicio
+    document.getElementById('loading').style.display = 'block';
 
+    // Función para refrescar la página cada 2 horas (7200000 ms)
+    function refreshPage() {
+        setInterval(() => {
+            location.reload();
+        }, 7200000); // 2 horas en milisegundos
+    }
 
-            // Datos traídos desde el servidor renderizados por Flask
-            const data = {
-                battery_voltage: {{ battery_voltage }},
-                autonomy: {{ autonomy }},
-                charging_mode: "{{ charging_mode }}",
-                charging_status: "{{ charging_status }}",
-                level: {{ level }},
-                air_temp: {{ air_temp }},
-                luminosity_day: "{{ luminosity_day }}",
-                acceleration: {{ acceleration }},
-                speed: {{ speed }},
-                preconditioning_status: "{{ preconditioning_status }}",
-                mileage: {{ mileage }},
+    // Datos traídos desde el servidor renderizados por Flask
+    const data = {
+        battery_voltage: {{ battery_voltage }},
+        autonomy: {{ autonomy }},
+        charging_mode: "{{ charging_mode }}",
+        charging_status: "{{ charging_status }}",
+        level: {{ level }},
+        air_temp: {{ air_temp }},
+        luminosity_day: "{{ luminosity_day }}",
+        acceleration: {{ acceleration }},
+        speed: {{ speed }},
+        preconditioning_status: "{{ preconditioning_status }}",
+        mileage: {{ mileage }},
+    };
 
-            };
-            document.getElementById('loading').style.display = 'none';
+    // Crear barras circulares para los valores numéricos
+    createCircularBar(document.getElementById('batteryVoltageChart').getContext('2d'), 'Battery Voltage', data.battery_voltage, 100);
+    createCircularBar(document.getElementById('autonomyChart').getContext('2d'), 'Autonomy', data.autonomy, 500);
+    createCircularBar(document.getElementById('levelChart').getContext('2d'), 'Battery Level', data.level, 100);
+    createCircularBar(document.getElementById('airTempChart').getContext('2d'), 'Air Temp', data.air_temp, 50);
+    createCircularBar(document.getElementById('accelerationChart').getContext('2d'), 'Acceleration', data.acceleration, 10);
+    createCircularBar(document.getElementById('speedChart').getContext('2d'), 'Speed', data.speed, 200);
+    createCircularBar(document.getElementById('mileageChart').getContext('2d'), 'Mileage', data.mileage, 100000);
 
-            // Crear barras circulares para los valores numéricos
-            createCircularBar(document.getElementById('batteryVoltageChart').getContext('2d'), 'Battery Voltage', data.battery_voltage, 100);
-            createCircularBar(document.getElementById('autonomyChart').getContext('2d'), 'Autonomy', data.autonomy, 500);
-            createCircularBar(document.getElementById('levelChart').getContext('2d'), 'Battery Level', data.level, 100);
-            createCircularBar(document.getElementById('airTempChart').getContext('2d'), 'Air Temp', data.air_temp, 50);
-            createCircularBar(document.getElementById('accelerationChart').getContext('2d'), 'Acceleration', data.acceleration, 10);
-            createCircularBar(document.getElementById('speedChart').getContext('2d'), 'Speed', data.speed, 200);
-            createCircularBar(document.getElementById('mileageChart').getContext('2d'), 'Mileage', data.mileage, 100000);
-        });
+    // Ocultar el mensaje de carga después de cargar los datos
+    document.getElementById('loading').style.display = 'none';
+
+    // Ejecutar la función de refrescar la página
+    refreshPage();
+});
+
     </script>
 </head>
 <body>
