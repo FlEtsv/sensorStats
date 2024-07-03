@@ -36,6 +36,12 @@ def get_historical_data(data_type):
 @app.route('/data/<data_type>')
 def show_data(data_type):
     data = get_historical_data(data_type)
+
+    # Si el data_type es 'voltaje', multiplica cada valor por cuatro
+    if data_type == 'battery_voltage':
+        for entry in data:
+            entry['value'] *= 4
+
     return render_template('data.html', data=data, data_type=data_type)
 
 

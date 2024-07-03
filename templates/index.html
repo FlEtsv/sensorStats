@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vehicle Data</title>
-    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <title>Datos de vehículo</title>
+    <link rel="icon" href="/static/assets/img/favicon.ico" type="image/x-icon">
     <style>
         /* Estilos generales para la página */
         body {
@@ -30,21 +30,42 @@
             color: #358fd1;
         }
         .data-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajusta automáticamente el número de columnas basado en el tamaño mínimo y máximo */
+            gap: 20px; /* Espaciado entre elementos */
+            justify-content: center; /* Centra los elementos horizontalmente */
+            align-items: start; /* Alinea los elementos al inicio de cada celda */
+            max-width: 1200px; /* Ancho máximo del contenedor */
+            margin: 20px auto; /* Centra el contenedor en la página y añade margen superior e inferior */
+            padding: 20px; /* Espaciado alrededor del contenedor */
+            transition: gap 0.5s ease; /* Transición suave para el espaciado */
         }
         .chart-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 20px;
-            width: 250px;
+            width: 100%;
             text-align: center;
             transition: box-shadow 0.5s;
             cursor: pointer;
+            position: relative; /* Asegura que el div tenga un contexto de posicionamiento */
+            height: 250px; /* Altura fija para asegurar espacio para el pie de página */
+        }
+        .chart-card img {
+            width: 100px; /* Ancho fijo para la imagen */
+            height: auto; /* La altura se ajusta automáticamente para mantener la proporción */
+            margin-bottom: 15px; /* Aumenta el espacio entre la imagen y el texto */
+        }
+        .chart-card p {
+            margin-top: auto; /* Empuja el párrafo hacia abajo */
+            position: absolute; /* Posicionamiento absoluto dentro del div */
+            bottom: 20px; /* Espacio desde el fondo del div */
+            width: 100%; /* Asegura que el párrafo se extienda a lo ancho del div */
+            text-align: center; /* Centra el texto dentro del párrafo */
         }
         .chart-card:hover {
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
@@ -59,23 +80,31 @@
             margin-bottom: 20px;
         }
         .form-container input {
-            padding: 10px;
+            padding: 15px;
             font-size: 1rem;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 300px;
+            width: 100%;
+            box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
         }
         .form-container button {
-            padding: 10px 20px;
+            padding: 15px 20px;
             font-size: 1rem;
             border: none;
             border-radius: 5px;
             background-color: #358fd1;
             color: white;
             cursor: pointer;
+            width: 48%; /* Ancho del botón para que se agrupen dos en una fila */
+            box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+            margin-right: 4%; /* Margen derecho entre botones */
+            margin-bottom: 10px; /* Espaciado inferior entre botones */
+        }
+        .form-container button:last-child {
+            margin-right: 0; /* Elimina el margen derecho del último botón */
         }
         .form-container button:hover {
-            background-color: #358fd1;
+            background-color: #1e6bb8;
         }
         .loader {
             border: 16px solid #f3f3f3;
@@ -97,7 +126,7 @@
             margin-top: 20px;
         }
         .data-links a {
-            padding: 10px 20px;
+            padding: 15px 30px;
             background-color: #358fd1;
             color: white;
             border-radius: 5px;
@@ -105,152 +134,211 @@
             transition: background-color 0.3s;
         }
         .data-links a:hover {
-            background-color: #358fd1;
+            background-color: #1e6bb8;
+        }
+        footer {
+            position: fixed; /* Fija el footer al fondo de la ventana */
+            left: 0;
+            bottom: 0; /* Alinea al fondo */
+            width: 100%; /* Asegura que se extienda a lo largo de la ventana */
+            text-align: center; /* Centra el contenido */
+            background-color: rgba(0, 0, 255, 0.5); /* Color azul con transparencia */
+            color: white; /* Texto en blanco para contraste */
+            font-size: 12px; /* Tamaño de fuente pequeño */
+            padding: 5px 0; /* Pequeño relleno superior e inferior para no ocupar mucho espacio */
+        }
+        @media (max-width: 768px) {
+            .data-container {
+                grid-template-columns: repeat(2, 1fr); /* Mantiene dos columnas */
+                gap: 30px; /* Aumenta el espaciado entre elementos */
+            }
+
+            .chart-card {
+                height: auto; /* Mantiene la altura automática */
+                width: calc(50% - 40px); /* Aumenta el ancho y considera el gap */
+            }
+            .chart-card img {
+                margin-bottom: 2px; /* Mayor espacio entre la imagen y el texto en dispositivos móviles */
+            }
+            .chart-card p {
+                bottom: 15px; /* Ajuste de posición del texto */
+            }
+            .form-container button {
+                width: 100%; /* Ancho completo para botones en dispositivos móviles */
+                margin-right: 0; /* Elimina el margen derecho de los botones en dispositivos móviles */
+                margin-bottom: 15px; /* Espaciado inferior entre botones en dispositivos móviles */
+            }
+            .data-links {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            .data-links a {
+                flex-basis: calc(50% - 20px); /* Ajusta el ancho para que dos enlaces quepan en una fila, restando el espacio del gap */
+                margin-bottom: 20px; /* Espacio adicional entre filas de enlaces */
+            }
+            footer {
+                font-size: 10px; /* Tamaño de fuente más pequeño para dispositivos móviles */
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Vehicle Data</h1>
-    <div class="form-container">
-        <form method="POST" action="/connect" id="form">
-            <label for="ip_port">IP/Port:</label>
-            <input type="password" id="ip_port" name="ip_port" value="{{ ip_port }}" required>
-            <label for="vin">VIN:</label>
-            <input type="password" id="vin" name="vin" value="{{ vin }}" required>
-            <input type="submit" value="Conectar">
-        </form>
-    </div>
-    <div class="data-container">
-        {% if error %}
-            <p>{{ error }}</p>
-        {% else %}
-            <div class="chart-card" onclick="navigateTo('/data/battery_voltage')">
-                <canvas id="batteryVoltageChart"></canvas>
-                <p><strong>Battery Voltage:</strong> {{ battery_voltage }} V</p>
-            </div>
-            <div class="chart-card" onclick="navigateTo('/data/autonomy')">
-                <canvas id="autonomyChart"></canvas>
-                <p><strong>Autonomy:</strong> {{ autonomy }} km</p>
-            </div>
-            <div class="chart-card" onclick="navigateTo('/data/level')">
-                <canvas id="levelChart"></canvas>
-                <p><strong>Battery Level:</strong> {{ level }} %</p>
-            </div>
-            <div class="chart-card" onclick="navigateTo('/data/air_temp')">
-                <canvas id="airTempChart"></canvas>
-                <p><strong>Air Temperature:</strong> {{ air_temp }} °C</p>
-            </div>
-            <div class="chart-card" onclick="navigateTo('/data/acceleration')">
-                <canvas id="accelerationChart"></canvas>
-                <p><strong>Acceleration:</strong> {{ acceleration }} m/s²</p>
-            </div>
-            <div class="chart-card" onclick="navigateTo('/data/speed')">
-                <canvas id="speedChart"></canvas>
-                <p><strong>Speed:</strong> {{ speed }} km/h</p>
-            </div>
-            <div class="chart-card" onclick="navigateTo('/data/mileage')">
-                <canvas id="mileageChart"></canvas>
-                <p><strong>Mileage:</strong> {{ mileage }} km</p>
-            </div>
-            <div class="chart-card">
-                <p><strong>Charging Mode:</strong> {{ charging_mode }}</p>
-                <p><strong>Charging Status:</strong> {{ charging_status }}</p>
-                <p><strong>Luminosity Day:</strong> {{ luminosity_day }}</p>
-                <p><strong>Preconditioning Status:</strong> {{ preconditioning_status }}</p>
-            </div>
-        {% endif %}
-    </div>
-    <div class="data-links">
-        <a href="/data/battery_voltage">Battery Voltage History</a>
-        <a href="/data/autonomy">Autonomy History</a>
-        <a href="/data/level">Battery Level History</a>
-        <a href="/data/air_temp">Air Temperature History</a>
-        <a href="/data/acceleration">Acceleration History</a>
-        <a href="/data/speed">Speed History</a>
-        <a href="/data/mileage">Mileage History</a>
-    </div>
-    <div id="loading" style="display: none;">
-        <div class="loader"></div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            try {
-                // Mostrar el mensaje de carga al inicio
-                document.getElementById('loading').style.display = 'block';
+<h1>Datos de vehiculo</h1>
+<div class="form-container">
+    <form method="POST" action="/connect" id="form">
+        <label for="ip_port">IP/Port:</label>
+        <input type="password" id="ip_port" name="ip_port" value="{{ ip_port }}" required>
+        <label for="vin">VIN:</label>
+        <input type="password" id="vin" name="vin" value="{{ vin }}" required>
+        <input type="submit" value="Conectar">
+    </form>
+</div>
+<div class="data-container">
+    {% if error %}
+        <p>{{ error }}</p>
+    {% else %}
+        <div class="chart-card" onclick="navigateTo('/data/battery_voltage')">
+            <img src="/static/assets/img/voltaje.png" alt="Battery Voltage">
+            <p><strong>Voltaje Bateria:</strong> {{ battery_voltage * 4}} V</p>
+        </div>
+        <div class="chart-card" onclick="navigateTo('/data/autonomy')">
+            <img src="/static/assets/img/autonomia.png" alt="autonomy">
+            <p><strong>Autonomia:</strong> {{ autonomy }} km</p>
+        </div>
+        <div class="chart-card" onclick="navigateTo('/data/level')">
+            <img src="/static/assets/img/nivelbateria.png" alt="batery Level">
+            <p><strong>Nivel de Bateria:</strong> {{ level }} %</p>
+        </div>
+        <div class="chart-card" onclick="navigateTo('/data/air_temp')">
+            <img src="/static/assets/img/temperatura.png" alt="temp">
+            <p><strong>Temperatura:</strong> {{ air_temp }} °C</p>
+        </div>
+        <div class="chart-card" onclick="navigateTo('/data/acceleration')">
+            <img src="/static/assets/img/aceleracion.png" alt="aceleration">
+            <p><strong>Aceleracion:</strong> {{ acceleration }} m/s²</p>
+        </div>
+        <div class="chart-card" onclick="navigateTo('/data/speed')">
+            <img src="/static/assets/img/velocidad.png" alt="velocity">
+            <p><strong>Velocidad:</strong> {{ speed }} km/h</p>
+        </div>
+        <div class="chart-card" onclick="navigateTo('/data/mileage')">
+            <img src="/static/assets/img/kilometros.png" alt="kilometres">
+            <p><strong>kilometraje:</strong> {{ mileage }} km</p>
+        </div>
+        <div class="chart-card">
+            <img src="/static/assets/img/cargando.png" alt="charge">
+            <p><strong>Cargando:</strong> {{ charging_mode }}</p>
 
-                // Datos traídos desde el servidor renderizados por Flask
-                const data = {
-                    battery_voltage: {{ battery_voltage }},
-                    autonomy: {{ autonomy }},
-                    charging_mode: "{{ charging_mode }}",
-                    charging_status: "{{ charging_status }}",
-                    level: {{ level }},
-                    air_temp: {{ air_temp }},
-                    luminosity_day: "{{ luminosity_day }}",
-                    acceleration: {{ acceleration }},
-                    speed: {{ speed }},
-                    preconditioning_status: "{{ preconditioning_status }}",
-                    mileage: {{ mileage }},
-                };
+        </div>
+        <div class="chart-card">
+            <img src="/static/assets/img/estatuscarga.png" alt="carging status">
+            <p><strong>Estado de carga:</strong> {{ charging_status }}</p>
+        </div>
+        <div class="chart-card">
+            <img src="/static/assets/img/luzdia.png" alt="luminosity_day">
+            <p><strong>Luminosidad de Dia:</strong> {{ luminosity_day }}</p>
+        </div>
+        <div class="chart-card">
+            <img src="/static/assets/img/aire.png" alt="batery Level">
+            <p><strong>Estado de precondicionamiento:</strong> {{ preconditioning_status }}</p>
+        </div>
+    {% endif %}
+</div>
+<div class="data-links">
+    <a href="/data/battery_voltage">Historial voltaje</a>
+    <a href="/data/autonomy">Historial autonomia</a>
+    <a href="/data/level">Historias nivel bateria</a>
+    <a href="/data/air_temp">Historial temperatura</a>
+    <a href="/data/acceleration">Historial aceleración</a>
+    <a href="/data/speed">Historial  Velocidad</a>
+    <a href="/data/mileage">Historial Kilometros</a>
+</div>
+<div id="loading" style="display: none;">
+    <div class="loader"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        try {
+            // Mostrar el mensaje de carga al inicio
+            document.getElementById('loading').style.display = 'block';
 
-                // Crear barras circulares para los valores numéricos
-                createCircularBar(document.getElementById('batteryVoltageChart').getContext('2d'), 'Battery Voltage', data.battery_voltage, 100);
-                createCircularBar(document.getElementById('autonomyChart').getContext('2d'), 'Autonomy', data.autonomy, 500);
-                createCircularBar(document.getElementById('levelChart').getContext('2d'), 'Battery Level', data.level, 100);
-                createCircularBar(document.getElementById('airTempChart').getContext('2d'), 'Air Temp', data.air_temp, 50);
-                createCircularBar(document.getElementById('accelerationChart').getContext('2d'), 'Acceleration', data.acceleration, 10);
-                createCircularBar(document.getElementById('speedChart').getContext('2d'), 'Speed', data.speed, 200);
-                createCircularBar(document.getElementById('mileageChart').getContext('2d'), 'Mileage', data.mileage, 100000);
+            // Datos traídos desde el servidor renderizados por Flask
+            const data = {
+                battery_voltage: {{ battery_voltage }},
+                autonomy: {{ autonomy }},
+                charging_mode: "{{ charging_mode }}",
+                charging_status: "{{ charging_status }}",
+                level: {{ level }},
+                air_temp: {{ air_temp }},
+                luminosity_day: "{{ luminosity_day }}",
+                acceleration: {{ acceleration }},
+                speed: {{ speed }},
+                preconditioning_status: "{{ preconditioning_status }}",
+                mileage: {{ mileage }},
+            };
 
-                // Ocultar el mensaje de carga después de cargar los datos
-                document.getElementById('loading').style.display = 'none';
+            // Crear barras circulares para los valores numéricos
+            createCircularBar(document.getElementById('batteryVoltageChart').getContext('2d'), 'Battery Voltage', data.battery_voltage, 100);
+            createCircularBar(document.getElementById('autonomyChart').getContext('2d'), 'Autonomy', data.autonomy, 500);
+            createCircularBar(document.getElementById('levelChart').getContext('2d'), 'Battery Level', data.level, 100);
+            createCircularBar(document.getElementById('airTempChart').getContext('2d'), 'Air Temp', data.air_temp, 50);
+            createCircularBar(document.getElementById('accelerationChart').getContext('2d'), 'Acceleration', data.acceleration, 10);
+            createCircularBar(document.getElementById('speedChart').getContext('2d'), 'Speed', data.speed, 200);
+            createCircularBar(document.getElementById('mileageChart').getContext('2d'), 'Mileage', data.mileage, 100000);
 
-                // Ejecutar la función de refrescar la página
-                refreshPage();
-            } catch (error) {
-                console.error('Error al crear los gráficos:', error);
-                // Ocultar el mensaje de carga si hay un error
-                document.getElementById('loading').style.display = 'none';
+            // Ocultar el mensaje de carga después de cargar los datos
+            document.getElementById('loading').style.display = 'none';
+
+            // Ejecutar la función de refrescar la página
+            refreshPage();
+        } catch (error) {
+            console.error('Error al crear los gráficos:', error);
+            // Ocultar el mensaje de carga si hay un error
+            document.getElementById('loading').style.display = 'none';
+        }
+    });
+
+    // Función para crear gráficos de barras circulares
+    function createCircularBar(ctx, label, value, max) {
+        return new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [label],
+                datasets: [{
+                    label: label,
+                    data: [value, max - value],
+                    backgroundColor: ['#358fd1', '#f0f0f0'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                cutoutPercentage: 95,
+                rotation: -Math.PI,
+                circumference: Math.PI,
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    enabled: false
+                }
             }
         });
+    }
 
-        // Función para crear gráficos de barras circulares
-        function createCircularBar(ctx, label, value, max) {
-            return new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: [label],
-                    datasets: [{
-                        label: label,
-                        data: [value, max - value],
-                        backgroundColor: ['#358fd1', '#f0f0f0'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    cutoutPercentage: 95,
-                    rotation: -Math.PI,
-                    circumference: Math.PI,
-                    legend: {
-                        display: false
-                    },
-                    tooltips: {
-                        enabled: false
-                    }
-                }
-            });
-        }
+    function navigateTo(url) {
+        window.location.href = url;
+    }
 
-        function navigateTo(url) {
-            window.location.href = url;
-        }
-
-        function refreshPage() {
-            setInterval(() => {
-                window.location.reload();
-            }, 7200000); // Refresh page every minute
-        }
-    </script>
+    function refreshPage() {
+        setInterval(() => {
+            window.location.reload();
+        }, 7200000); // Refresh page every minute
+    }
+</script>
+<footer>
+    <p>© 2021 Vehicle Data</p>
+    <a href="https://www.freepik.es/search">Icono de Freepik</a>
+</footer>
 </body>
 </html>
