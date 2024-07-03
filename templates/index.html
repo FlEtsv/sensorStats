@@ -31,12 +31,12 @@
         }
         .data-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Ajusta automáticamente el número de columnas basado en el tamaño mínimo y máximo */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Crea columnas que se ajustan al contenido con un mínimo de 250px y un máximo que se adapta al espacio disponible */
             gap: 20px; /* Espaciado entre elementos */
             justify-content: center; /* Centra los elementos horizontalmente */
             align-items: start; /* Alinea los elementos al inicio de cada celda */
             max-width: 1200px; /* Ancho máximo del contenedor */
-            margin: 20px auto; /* Centra el contenedor en la página y añade margen superior e inferior */
+            margin: 0 auto; /* Centra el contenedor en la página */
             padding: 20px; /* Espaciado alrededor del contenedor */
             transition: gap 0.5s ease; /* Transición suave para el espaciado */
         }
@@ -47,23 +47,25 @@
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 100%;
+            padding: 10px;
+            width: 250px;
             text-align: center;
             transition: box-shadow 0.5s;
             cursor: pointer;
             position: relative; /* Asegura que el div tenga un contexto de posicionamiento */
-            height: 250px; /* Altura fija para asegurar espacio para el pie de página */
+            height: 150px; /* Altura fija para asegurar espacio para el pie de página */
         }
+
         .chart-card img {
-            width: 100px; /* Ancho fijo para la imagen */
+            width: 100px; /* Ajusta el ancho a 100px */
             height: auto; /* La altura se ajusta automáticamente para mantener la proporción */
-            margin-bottom: 15px; /* Aumenta el espacio entre la imagen y el texto */
+            margin-bottom: 3px; /* Espacio entre la imagen y el texto */
         }
+
         .chart-card p {
             margin-top: auto; /* Empuja el párrafo hacia abajo */
             position: absolute; /* Posicionamiento absoluto dentro del div */
-            bottom: 20px; /* Espacio desde el fondo del div */
+            bottom: 3px; /* Espacio desde el fondo del div */
             width: 100%; /* Asegura que el párrafo se extienda a lo ancho del div */
             text-align: center; /* Centra el texto dentro del párrafo */
         }
@@ -80,31 +82,23 @@
             margin-bottom: 20px;
         }
         .form-container input {
-            padding: 15px;
+            padding: 10px;
             font-size: 1rem;
             border: 1px solid #ccc;
             border-radius: 5px;
-            width: 100%;
-            box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+            width: 300px;
         }
         .form-container button {
-            padding: 15px 20px;
+            padding: 10px 20px;
             font-size: 1rem;
             border: none;
             border-radius: 5px;
             background-color: #358fd1;
             color: white;
             cursor: pointer;
-            width: 48%; /* Ancho del botón para que se agrupen dos en una fila */
-            box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
-            margin-right: 4%; /* Margen derecho entre botones */
-            margin-bottom: 10px; /* Espaciado inferior entre botones */
-        }
-        .form-container button:last-child {
-            margin-right: 0; /* Elimina el margen derecho del último botón */
         }
         .form-container button:hover {
-            background-color: #1e6bb8;
+            background-color: #358fd1;
         }
         .loader {
             border: 16px solid #f3f3f3;
@@ -126,7 +120,7 @@
             margin-top: 20px;
         }
         .data-links a {
-            padding: 15px 30px;
+            padding: 10px 20px;
             background-color: #358fd1;
             color: white;
             border-radius: 5px;
@@ -134,7 +128,7 @@
             transition: background-color 0.3s;
         }
         .data-links a:hover {
-            background-color: #1e6bb8;
+            background-color: #358fd1;
         }
         footer {
             position: fixed; /* Fija el footer al fondo de la ventana */
@@ -148,38 +142,43 @@
             padding: 5px 0; /* Pequeño relleno superior e inferior para no ocupar mucho espacio */
         }
         @media (max-width: 768px) {
-            .data-container {
-                grid-template-columns: repeat(2, 1fr); /* Mantiene dos columnas */
-                gap: 30px; /* Aumenta el espaciado entre elementos */
-            }
-
-            .chart-card {
-                height: auto; /* Mantiene la altura automática */
-                width: calc(50% - 40px); /* Aumenta el ancho y considera el gap */
-            }
-            .chart-card img {
-                margin-bottom: 2px; /* Mayor espacio entre la imagen y el texto en dispositivos móviles */
-            }
-            .chart-card p {
-                bottom: 15px; /* Ajuste de posición del texto */
-            }
-            .form-container button {
-                width: 100%; /* Ancho completo para botones en dispositivos móviles */
-                margin-right: 0; /* Elimina el margen derecho de los botones en dispositivos móviles */
-                margin-bottom: 15px; /* Espaciado inferior entre botones en dispositivos móviles */
-            }
-            .data-links {
-                flex-wrap: wrap;
-                justify-content: space-around;
-            }
-            .data-links a {
-                flex-basis: calc(50% - 20px); /* Ajusta el ancho para que dos enlaces quepan en una fila, restando el espacio del gap */
-                margin-bottom: 20px; /* Espacio adicional entre filas de enlaces */
-            }
-            footer {
-                font-size: 10px; /* Tamaño de fuente más pequeño para dispositivos móviles */
-            }
+        .data-container {
+            grid-template-columns: repeat(2, 1fr); /* Dos columnas en dispositivos móviles */
+            gap: 20px; /* Espaciado entre elementos en dispositivos móviles */
         }
+
+        .chart-card {
+            height: auto; /* Altura automática para adaptarse al contenido */
+            width: calc(50% - 20px); /* Ancho del 50% de la pantalla menos el espacio entre tarjetas */
+            margin-bottom: 40px; /* Espaciado inferior entre tarjetas */
+            padding: 50px;
+        }
+        .chart-card img {
+            margin-bottom: 20px; /* Mayor espacio entre la imagen y el texto en dispositivos móviles */
+        }
+        .chart-card p {
+            bottom: 20px; /* Ajuste de posición del texto */
+        }
+        .form-container button {
+            width: 100%; /* Ancho completo para botones en dispositivos móviles */
+            margin-right: 0; /* Elimina el margen derecho de los botones en dispositivos móviles */
+            margin-bottom: 10px; /* Espaciado inferior entre botones en dispositivos móviles */
+        }
+        .data-links {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .data-links a {
+            padding: 8px 18px; /* Reducción del padding para enlaces en dispositivos móviles */
+            font-size: 0.8rem; /* Reducción del tamaño de fuente para enlaces en dispositivos móviles */
+            flex-basis: calc(50% - 20px); /* Ajusta el ancho para que dos enlaces quepan en una fila, restando el espacio del gap */
+            margin-bottom: 10px; /* Espacio adicional entre filas de enlaces */
+        }
+        footer {
+            font-size: 10px; /* Tamaño de fuente más pequeño para dispositivos móviles */
+        }
+    }
+
     </style>
 </head>
 <body>
@@ -336,9 +335,5 @@
         }, 7200000); // Refresh page every minute
     }
 </script>
-<footer>
-    <p>© 2021 Vehicle Data</p>
-    <a href="https://www.freepik.es/search">Icono de Freepik</a>
-</footer>
 </body>
 </html>
