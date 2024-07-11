@@ -1,10 +1,13 @@
 version: '3.8'
 
 services:
-  psacarcontroller:
+  sensorstats:
     build: .
     ports:
-      - "8080:${PORT}"
+      - "${USER_PORT:-5006}:8080"
     environment:
-      - PORT=${PORT}
+      - PORT=8080
+      - TZ=Europe/Madrid
     restart: unless-stopped
+    volumes:
+      - ./data:/app/data/historialDatos

@@ -1,6 +1,6 @@
+from flask import Flask, render_template, request, redirect, url_for
 import json
 import os
-from flask import Flask, render_template, request, redirect, url_for
 import requests
 import datetime
 
@@ -12,8 +12,8 @@ app.secret_key = 'supersecretkey'
 def get_historical_data(data_type):
     historical_data = []
 
-    if os.path.exists('historical_data.json'):
-        with open('historical_data.json', 'r') as f:
+    if os.path.exists('data/historialDatos/historical_data.json'):
+        with open('data/historialDatos/historical_data.json', 'r') as f:
             historical_data = json.load(f)
 
     # Filtrar datos por el tipo especificado y tomar los últimos 50 registros
@@ -60,9 +60,14 @@ def get_data(api_url):
 def save_to_historical_data(data):
     historical_data = []
 
-    if os.path.exists('historical_data.json'):
-        with open('historical_data.json', 'r') as f:
-            historical_data = json.load(f)
+    # Verificar si existe el archivo, si no, crearlo vacío
+    if not os.path.exists('data/historialDatos/historical_data.json'):
+        with open('data/historialDatos/historical_data.json', 'w') as f:
+            json.dump(historical_data, f)
+
+    # Cargar los datos históricos existentes
+    with open('data/historialDatos/historical_data.json', 'r') as f:
+        historical_data = json.load(f)
 
     # Verificar si los nuevos datos son únicos antes de agregarlos
     new_data = {
@@ -70,23 +75,33 @@ def save_to_historical_data(data):
         'data': data
     }
 
-    # Verificar duplicados
+    # Verificar duplicados considerando fecha y hora
+    new_data_datetime = datetime.datetime.fromisoformat(new_data['timestamp'])
     for entry in historical_data:
-        if entry['timestamp'].split('T')[0] == new_data['timestamp'].split('T')[0]:
-            # Si ya existe una entrada para la misma fecha, comparamos el contenido
+        entry_datetime = datetime.datetime.fromisoformat(entry['timestamp'])
+        # Compara hasta minutos para evitar duplicados en el mismo minuto
+        if entry_datetime.strftime('%Y-%m-%d %H:%M') == new_data_datetime.strftime('%Y-%m-%d %H:%M'):
+            # Si ya existe una entrada para la misma fecha y hora, comparamos el contenido
             if entry['data'] == new_data['data']:
                 return  # No se agrega duplicado
 
     # Agregar los nuevos datos a la lista histórica
     historical_data.append(new_data)
 
-    with open('historical_data.json', 'w') as f:
-        json.dump(historical_data, f)
+    # Eliminar los registros más antiguos si hay más de 50
+    if len(historical_data) > 50:
+        # Ordenar por fecha para asegurar que se eliminen los más antiguos
+        historical_data.sort(key=lambda x: datetime.datetime.fromisoformat(x['timestamp']))
+        # Mantener solo los 50 más recientes
+        historical_data = historical_data[-50:]
 
+    # Guardar los datos actualizados en el archivo
+    with open('data/historialDatos/historical_data.json', 'w') as f:
+        json.dump(historical_data, f)
 
 @app.route('/connect', methods=['POST'])
 def connect():
-    with open('data.json', 'w') as f:
+    with open('data/historialDatos/data.json', 'w') as f:
         json.dump(request.form.to_dict(), f)
     return redirect(url_for('index'))
 
@@ -94,12 +109,12 @@ def connect():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        with open('data.json', 'w') as f:
+        with open('data/historialDatos/data.json', 'w') as f:
             json.dump(request.form.to_dict(), f)
         return redirect(url_for('index'))
 
-    if os.path.exists('data.json'):
-        with open('data.json', 'r') as f:
+    if os.path.exists('data/historialDatos/data.json'):
+        with open('data/historialDatos/data.json', 'r') as f:
             data = json.load(f)
         ip_port = data.get('ip_port', '')
         vin = data.get('vin', '')
@@ -172,7 +187,7 @@ def index():
                                    error="Error obteniendo los datos. Por favor, inténtelo de nuevo más tarde.",
                                    api_url=api_url)
     else:
-        return render_template('index.html')
+        return render_template('index.html', ip_port=ip_port, vin=vin)
 
 
 if __name__ == '__main__':

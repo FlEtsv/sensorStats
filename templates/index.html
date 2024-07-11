@@ -198,7 +198,7 @@
     {% else %}
         <div class="chart-card" onclick="navigateTo('/data/battery_voltage')">
             <img src="/static/assets/img/voltaje.png" alt="Battery Voltage">
-            <p><strong>Voltaje Bateria:</strong> {{ battery_voltage * 4}} V</p>
+            <p><strong>Voltaje Bateria:</strong> {{ battery_voltage * 4 }} V</p>
         </div>
         <div class="chart-card" onclick="navigateTo('/data/autonomy')">
             <img src="/static/assets/img/autonomia.png" alt="autonomy">
@@ -222,12 +222,11 @@
         </div>
         <div class="chart-card" onclick="navigateTo('/data/mileage')">
             <img src="/static/assets/img/kilometros.png" alt="kilometres">
-            <p><strong>kilometraje:</strong> {{ mileage }} km</p>
+            <p><strong>Kilometraje:</strong> {{ mileage }} km</p>
         </div>
         <div class="chart-card">
             <img src="/static/assets/img/cargando.png" alt="charge">
             <p><strong>Cargando:</strong> {{ charging_mode }}</p>
-
         </div>
         <div class="chart-card">
             <img src="/static/assets/img/estatuscarga.png" alt="carging status">
@@ -235,7 +234,7 @@
         </div>
         <div class="chart-card">
             <img src="/static/assets/img/luzdia.png" alt="luminosity_day">
-            <p><strong>Luminosidad de Dia:</strong> {{ luminosity_day }}</p>
+            <p><strong>Luminosidad de Día:</strong> {{ luminosity_day }}</p>
         </div>
         <div class="chart-card">
             <img src="/static/assets/img/aire.png" alt="batery Level">
@@ -245,12 +244,12 @@
 </div>
 <div class="data-links">
     <a href="/data/battery_voltage">Historial voltaje</a>
-    <a href="/data/autonomy">Historial autonomia</a>
-    <a href="/data/level">Historias nivel bateria</a>
+    <a href="/data/autonomy">Historial autonomía</a>
+    <a href="/data/level">Historial nivel batería</a>
     <a href="/data/air_temp">Historial temperatura</a>
     <a href="/data/acceleration">Historial aceleración</a>
-    <a href="/data/speed">Historial  Velocidad</a>
-    <a href="/data/mileage">Historial Kilometros</a>
+    <a href="/data/speed">Historial velocidad</a>
+    <a href="/data/mileage">Historial kilometraje</a>
 </div>
 <div id="loading" style="display: none;">
     <div class="loader"></div>
@@ -261,30 +260,6 @@
         try {
             // Mostrar el mensaje de carga al inicio
             document.getElementById('loading').style.display = 'block';
-
-            // Datos traídos desde el servidor renderizados por Flask
-            const data = {
-                battery_voltage: {{ battery_voltage }},
-                autonomy: {{ autonomy }},
-                charging_mode: "{{ charging_mode }}",
-                charging_status: "{{ charging_status }}",
-                level: {{ level }},
-                air_temp: {{ air_temp }},
-                luminosity_day: "{{ luminosity_day }}",
-                acceleration: {{ acceleration }},
-                speed: {{ speed }},
-                preconditioning_status: "{{ preconditioning_status }}",
-                mileage: {{ mileage }},
-            };
-
-            // Crear barras circulares para los valores numéricos
-            createCircularBar(document.getElementById('batteryVoltageChart').getContext('2d'), 'Battery Voltage', data.battery_voltage, 100);
-            createCircularBar(document.getElementById('autonomyChart').getContext('2d'), 'Autonomy', data.autonomy, 500);
-            createCircularBar(document.getElementById('levelChart').getContext('2d'), 'Battery Level', data.level, 100);
-            createCircularBar(document.getElementById('airTempChart').getContext('2d'), 'Air Temp', data.air_temp, 50);
-            createCircularBar(document.getElementById('accelerationChart').getContext('2d'), 'Acceleration', data.acceleration, 10);
-            createCircularBar(document.getElementById('speedChart').getContext('2d'), 'Speed', data.speed, 200);
-            createCircularBar(document.getElementById('mileageChart').getContext('2d'), 'Mileage', data.mileage, 100000);
 
             // Ocultar el mensaje de carga después de cargar los datos
             document.getElementById('loading').style.display = 'none';
@@ -298,33 +273,6 @@
         }
     });
 
-    // Función para crear gráficos de barras circulares
-    function createCircularBar(ctx, label, value, max) {
-        return new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: [label],
-                datasets: [{
-                    label: label,
-                    data: [value, max - value],
-                    backgroundColor: ['#358fd1', '#f0f0f0'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                cutoutPercentage: 95,
-                rotation: -Math.PI,
-                circumference: Math.PI,
-                legend: {
-                    display: false
-                },
-                tooltips: {
-                    enabled: false
-                }
-            }
-        });
-    }
-
     function navigateTo(url) {
         window.location.href = url;
     }
@@ -332,7 +280,7 @@
     function refreshPage() {
         setInterval(() => {
             window.location.reload();
-        }, 7200000); // Refresh page every minute
+        }, 7200000); // Refrescar cada 2 horas
     }
 </script>
 </body>
