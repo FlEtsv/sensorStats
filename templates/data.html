@@ -19,7 +19,7 @@
             flex-direction: column; /* Cambia a dirección de columna para móvil */
         }
         .content {
-            width: 80%; /* Ancho del contenido principal */
+            width: 100%; /* Ancho del contenido principal */
             display: flex;
             flex-direction: column;
             align-items: center; /* Centra contenido verticalmente */
@@ -40,18 +40,29 @@
             width: 100%; /* Ancho completo de la tabla */
             margin-top: 20px;
             border-collapse: collapse;
+            background-color: white;
+
         }
-        th, td {
+        table th{
+            border: 1px solid #ddd;
+            padding: 16px;
+            text-align: left;
+            transition: background-color 0.3s ease; /* Transición de color de fondo */
+
+        }
+        td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
             transition: background-color 0.3s ease; /* Transición de color de fondo */
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #1e6bb8;
+            color: white;
+
         }
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #e5f1fa;
         }
         tr:hover {
             background-color: #f2f2f2; /* Cambio de color al hacer hover */

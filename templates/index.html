@@ -131,12 +131,13 @@
             background-color: #358fd1;
         }
         footer {
+            color: black;
             position: fixed; /* Fija el footer al fondo de la ventana */
             left: 0;
             bottom: 0; /* Alinea al fondo */
             width: 100%; /* Asegura que se extienda a lo largo de la ventana */
             text-align: center; /* Centra el contenido */
-            background-color: rgba(0, 0, 255, 0.5); /* Color azul con transparencia */
+            background-color: rgba(122, 122, 128, 0.5); /* Color azul con transparencia */
             color: white; /* Texto en blanco para contraste */
             font-size: 12px; /* Tamaño de fuente pequeño */
             padding: 5px 0; /* Pequeño relleno superior e inferior para no ocupar mucho espacio */
@@ -264,8 +265,7 @@
             // Ocultar el mensaje de carga después de cargar los datos
             document.getElementById('loading').style.display = 'none';
 
-            // Ejecutar la función de refrescar la página
-            refreshPage();
+
         } catch (error) {
             console.error('Error al crear los gráficos:', error);
             // Ocultar el mensaje de carga si hay un error
@@ -277,11 +277,10 @@
         window.location.href = url;
     }
 
-    function refreshPage() {
-        setInterval(() => {
-            window.location.reload();
-        }, 7200000); // Refrescar cada 2 horas
-    }
+
 </script>
+<footer>
+    <a href="https://www.flaticon.es/iconos-gratis/alto-voltaje" title="alto voltaje iconos">Flaticon</a>
+</footer>
 </body>
 </html>
