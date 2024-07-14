@@ -61,12 +61,11 @@
             color: white;
 
         }
-        tr:nth-child(even) {
-            background-color: #e5f1fa;
-        }
+
         tr:hover {
             background-color: #f2f2f2; /* Cambio de color al hacer hover */
         }
+
         .chart-container {
             width: 100%; /* Ancho del contenedor de gráficos */
             margin-top: 20px;
@@ -100,6 +99,10 @@
             background-color: #1e6bb8; /* Cambio de color suave al hacer hover */
             transform: translateY(-2px); /* Movimiento hacia arriba al hacer hover */
         }
+        .rojo { background-color: #ffcccc; }
+        .amarillo { background-color: #ffff99; }
+        .verde { background-color: #ccffcc; }
+        .blanco { background-color: #ffffff; }
 
         /* Media queries para pantallas pequeñas (móviles) */
         @media (max-width: 768px) {
@@ -122,6 +125,7 @@
                 font-size: 0.9rem; /* Tamaño de fuente más pequeño en botón para dispositivos móviles */
             }
         }
+
     </style>
 </head>
 <body>
@@ -136,7 +140,7 @@
             </thead>
             <tbody>
                 {% for entry in data %}
-                <tr>
+                <tr class="{{ entry.color }}">
                     <td>{{ entry.timestamp }}</td>
                     <td>{{ entry.value }}</td>
                 </tr>

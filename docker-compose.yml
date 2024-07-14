@@ -10,4 +10,4 @@ services:
       - TZ=Europe/Madrid
     restart: unless-stopped
     volumes:
-      - ./data:/app/data/historialDatos
+      - ./data/historialDatos:/app/data/historialDatos
