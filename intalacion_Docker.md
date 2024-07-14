@@ -30,7 +30,7 @@ docker pull fletsv/sensorstatsamd64
 - Ejecuta el siguiente comando para poner en marcha el contenedor:
 
 
-docker run -d --name sensorstats -p 5006:8080 -e TZ=Europe/Madrid -v $(pwd)/data:/app/data/historialDatos fletsv/sensorstatsamd64
+`docker run -d --name sensorstats -p 5006:8080 -e TZ=Europe/Madrid -v $(pwd)/data:/app/data/historialDatos fletsv/sensorstatsamd64`
 
 ### 5. Ejecutar la Imagen desde el Gestor Cliente de Docker
 
