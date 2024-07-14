@@ -19,7 +19,7 @@ La aplicación recupera datos de sensores del vehículo desde la API de psaCarCo
   - Recupera datos en formato JSON desde la API de psaCarController.
   - Procesa los datos y los prepara para la visualización.
   - Renderiza la plantilla index.html con los datos procesados.
-- `index.html`: Esta plantilla presenta los datos al usuario final utilizando gráficos creados con la biblioteca Chart.js. Los gráficos incluyen:
+- `index.html`: Esta plantilla presenta los datos al usuario final utilizando cards con imagenes y el valor. Los cards incluyen:
   - Voltaje de la batería
   - Autonomía
   - Nivel de la batería
@@ -31,12 +31,14 @@ La aplicación recupera datos de sensores del vehículo desde la API de psaCarCo
   - Estado de carga
   - Luminosidad del día
   - Estado del preacondicionamiento
+- `data.html`: Esta plantilla presenta los datos mas a detalle, nos muestra una tabla que nos facilita el formato Fecha-Valor, asi como un grafico de barras para poder ver visualmente la evolucion.
 
 ## Tecnologías Utilizadas
 
 - Flask: Microframework para Python que facilita la creación de aplicaciones web.
 - Docker: Plataforma para desarrollar, enviar y ejecutar aplicaciones en contenedores.
 - Chart.js: Biblioteca de JavaScript para crear gráficos atractivos y personalizables.
+
 
 ## Contribuciones
 
