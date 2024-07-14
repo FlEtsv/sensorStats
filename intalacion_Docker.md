@@ -21,9 +21,6 @@ docker pull fletsv/sensorstatsamd64
 ### 3. Crear Carpetas y Archivos Necesarios
 
 - Crea una carpeta `data` donde desees almacenar tus datos.
-- Dentro de la carpeta `data`, crea dos archivos:
-  - `historical_data.json`
-  - `data.json`
 
 ### 4. Ejecutar la Imagen desde la Línea de Comandos
 
