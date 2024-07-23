@@ -2,6 +2,7 @@ class session:
     __instance = None
     vin = ''
     ip_port = ''
+    coordenadas = []
 
     def __init__(self, vin='', ip_port=''):
         if session.__instance is not None:
@@ -32,3 +33,9 @@ class session:
     def clear(self):
         self.vin = ''
         self.ip_port = ''
+
+    def set_coordenadas(self, coordenadas):
+        self.coordenadas = coordenadas
+
+    def get_coordenadas(self):
+        return self.coordenadas

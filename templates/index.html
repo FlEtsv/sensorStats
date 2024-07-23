@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datos de vehículo</title>
     <link rel="icon" href="/static/assets/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        /* Estilos generales para la página */
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             background-color: #f5f5f5;
@@ -18,27 +18,28 @@
             align-items: center;
             min-height: 100vh;
             flex-direction: column;
+            padding-bottom: 60px; /* Ajusta este valor según la altura de tu footer */
         }
         h1 {
             font-size: 2rem;
-            margin-bottom: 20px;
-            color: #358fd1;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            transition: color 0.5s;
+            margin-bottom: 30px;
+            color: #000000;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            transition: color 0.7s;
         }
         h1:hover {
-            color: #358fd1;
+            color: #b4dcf8;
         }
         .data-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Crea columnas que se ajustan al contenido con un mínimo de 250px y un máximo que se adapta al espacio disponible */
-            gap: 20px; /* Espaciado entre elementos */
-            justify-content: center; /* Centra los elementos horizontalmente */
-            align-items: start; /* Alinea los elementos al inicio de cada celda */
-            max-width: 1200px; /* Ancho máximo del contenedor */
-            margin: 0 auto; /* Centra el contenedor en la página */
-            padding: 20px; /* Espaciado alrededor del contenedor */
-            transition: gap 0.5s ease; /* Transición suave para el espaciado */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            align-items: start;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            transition: gap 0.5s ease;
         }
         .chart-card {
             display: flex;
@@ -52,31 +53,32 @@
             text-align: center;
             transition: box-shadow 0.5s;
             cursor: pointer;
-            position: relative; /* Asegura que el div tenga un contexto de posicionamiento */
-            height: 150px; /* Altura fija para asegurar espacio para el pie de página */
+            position: relative;
+            height: 150px;
         }
-
-        .chart-card img {
-            width: 100px; /* Ajusta el ancho a 100px */
-            height: auto; /* La altura se ajusta automáticamente para mantener la proporción */
-            margin-bottom: 3px; /* Espacio entre la imagen y el texto */
+        .chart-card-verde {
+            background-color: #d4edda;
         }
-
+        .chart-card-rojo {
+            background-color: #f8d7da;
+        }
+        .chart-card-amarillo {
+            background-color: #fff3cd;
+        }
+        img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 3px;
+        }
         .chart-card p {
-            margin-top: auto; /* Empuja el párrafo hacia abajo */
-            position: absolute; /* Posicionamiento absoluto dentro del div */
-            bottom: 3px; /* Espacio desde el fondo del div */
-            width: 100%; /* Asegura que el párrafo se extienda a lo ancho del div */
-            text-align: center; /* Centra el texto dentro del párrafo */
+            margin-top: auto;
+            position: absolute;
+            bottom: 3px;
+            width: 100%;
+            text-align: center;
         }
         .chart-card:hover {
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
-        }
-        .chart-card canvas {
-            margin-bottom: 10px;
-        }
-        p {
-            margin: 0;
         }
         .form-container {
             margin-bottom: 20px;
@@ -112,7 +114,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* Estilos para los enlaces de datos */
         .data-links {
             display: flex;
             justify-content: center;
@@ -132,58 +133,58 @@
         }
         footer {
             color: black;
-            position: fixed; /* Fija el footer al fondo de la ventana */
+            position: fixed;
             left: 0;
-            bottom: 0; /* Alinea al fondo */
-            width: 100%; /* Asegura que se extienda a lo largo de la ventana */
-            text-align: center; /* Centra el contenido */
-            background-color: rgba(122, 122, 128, 0.5); /* Color azul con transparencia */
-            color: white; /* Texto en blanco para contraste */
-            font-size: 12px; /* Tamaño de fuente pequeño */
-            padding: 5px 0; /* Pequeño relleno superior e inferior para no ocupar mucho espacio */
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: rgba(122, 122, 128, 0.5);
+            color: white;
+            font-size: 12px;
+            padding: 5px 0;
         }
         @media (max-width: 768px) {
-        .data-container {
-            grid-template-columns: repeat(2, 1fr); /* Dos columnas en dispositivos móviles */
-            gap: 20px; /* Espaciado entre elementos en dispositivos móviles */
+            .data-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            .chart-card img {
+                margin-bottom: 20px;
+            }
+            .chart-card p {
+                bottom: 20px;
+            }
+            .form-container button {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            .data-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-bottom: 60px;
+            }
+            .data-links a {
+                padding: 8px 18px;
+                font-size: 0.8rem;
+                flex-basis: calc(50% - 20px);
+                margin-bottom: 15px;
+            }
+            footer {
+                margin-top: 50px;
+                font-size: 10px;
+            }
         }
-
-        .chart-card {
-            height: auto; /* Altura automática para adaptarse al contenido */
-            width: calc(50% - 20px); /* Ancho del 50% de la pantalla menos el espacio entre tarjetas */
-            margin-bottom: 40px; /* Espaciado inferior entre tarjetas */
-            padding: 50px;
+        #mapid {
+            height: 400px;
+            width: 600px;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
-        .chart-card img {
-            margin-bottom: 20px; /* Mayor espacio entre la imagen y el texto en dispositivos móviles */
-        }
-        .chart-card p {
-            bottom: 20px; /* Ajuste de posición del texto */
-        }
-        .form-container button {
-            width: 100%; /* Ancho completo para botones en dispositivos móviles */
-            margin-right: 0; /* Elimina el margen derecho de los botones en dispositivos móviles */
-            margin-bottom: 10px; /* Espaciado inferior entre botones en dispositivos móviles */
-        }
-        .data-links {
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        .data-links a {
-            padding: 8px 18px; /* Reducción del padding para enlaces en dispositivos móviles */
-            font-size: 0.8rem; /* Reducción del tamaño de fuente para enlaces en dispositivos móviles */
-            flex-basis: calc(50% - 20px); /* Ajusta el ancho para que dos enlaces quepan en una fila, restando el espacio del gap */
-            margin-bottom: 10px; /* Espacio adicional entre filas de enlaces */
-        }
-        footer {
-            font-size: 10px; /* Tamaño de fuente más pequeño para dispositivos móviles */
-        }
-    }
-
     </style>
 </head>
 <body>
-<h1>Datos de vehiculo</h1>
+<h1>Datos de vehículo</h1>
 <div class="form-container">
     <form method="POST" action="/connect" id="form">
         <label for="ip_port">IP/Port:</label>
@@ -197,52 +198,53 @@
     {% if error %}
         <p>{{ error }}</p>
     {% else %}
-        <div class="chart-card" onclick="navigateTo('/data/battery_voltage')">
+        <div class="chart-card {{ colorBV }}" onclick="navigateTo('/data/battery_voltage')">
             <img src="/static/assets/img/voltaje.png" alt="Battery Voltage">
-            <p><strong>Voltaje Bateria:</strong> {{ battery_voltage * 4 }} V</p>
+            <p><strong>Voltaje Batería:</strong> {{ battery_voltage * 4 }} V</p>
         </div>
-        <div class="chart-card" onclick="navigateTo('/data/autonomy')">
-            <img src="/static/assets/img/autonomia.png" alt="autonomy">
-            <p><strong>Autonomia:</strong> {{ autonomy }} km</p>
+        <div class="chart-card {{ colorAutonomy }}" onclick="navigateTo('/data/autonomy')">
+            <img src="/static/assets/img/autonomia.png" alt="Autonomy">
+            <p><strong>Autonomía:</strong> {{ autonomy }} km</p>
         </div>
-        <div class="chart-card" onclick="navigateTo('/data/level')">
-            <img src="/static/assets/img/nivelbateria.png" alt="batery Level">
-            <p><strong>Nivel de Bateria:</strong> {{ level }} %</p>
+        <div class="chart-card {{ colorLevel }}" onclick="navigateTo('/data/level')">
+            <img src="/static/assets/img/nivelbateria.png" alt="Battery Level">
+            <p><strong>Nivel de Batería:</strong> {{ level }} %</p>
         </div>
-        <div class="chart-card" onclick="navigateTo('/data/air_temp')">
-            <img src="/static/assets/img/temperatura.png" alt="temp">
+        <div class="chart-card {{ colorAirTemp }}" onclick="navigateTo('/data/air_temp')">
+            <img src="/static/assets/img/temperatura.png" alt="Air Temperature">
             <p><strong>Temperatura:</strong> {{ air_temp }} °C</p>
         </div>
         <div class="chart-card" onclick="navigateTo('/data/acceleration')">
-            <img src="/static/assets/img/aceleracion.png" alt="aceleration">
-            <p><strong>Aceleracion:</strong> {{ acceleration }} m/s²</p>
+            <img src="/static/assets/img/aceleracion.png" alt="Acceleration">
+            <p><strong>Aceleración:</strong> {{ acceleration }} m/s²</p>
         </div>
         <div class="chart-card" onclick="navigateTo('/data/speed')">
-            <img src="/static/assets/img/velocidad.png" alt="velocity">
+            <img src="/static/assets/img/velocidad.png" alt="Speed">
             <p><strong>Velocidad:</strong> {{ speed }} km/h</p>
         </div>
         <div class="chart-card" onclick="navigateTo('/data/mileage')">
-            <img src="/static/assets/img/kilometros.png" alt="kilometres">
+            <img src="/static/assets/img/kilometros.png" alt="Mileage">
             <p><strong>Kilometraje:</strong> {{ mileage }} km</p>
         </div>
-        <div class="chart-card">
-            <img src="/static/assets/img/cargando.png" alt="charge">
+        <div class="chart-card {{ colorModoCarga }}">
+            <img src="/static/assets/img/cargando.png" alt="Charge">
             <p><strong>Cargando:</strong> {{ charging_mode }}</p>
         </div>
-        <div class="chart-card">
-            <img src="/static/assets/img/estatuscarga.png" alt="carging status">
+        <div class="chart-card {{ colorCargando }}">
+            <img src="/static/assets/img/estatuscarga.png" alt="Charging Status">
             <p><strong>Estado de carga:</strong> {{ charging_status }}</p>
         </div>
-        <div class="chart-card">
-            <img src="/static/assets/img/luzdia.png" alt="luminosity_day">
+        <div class="chart-card {{ colorLD }}">
+            <img src="/static/assets/img/luzdia.png" alt="Luminosity Day">
             <p><strong>Luminosidad de Día:</strong> {{ luminosity_day }}</p>
         </div>
-        <div class="chart-card">
-            <img src="/static/assets/img/aire.png" alt="batery Level">
+        <div class="chart-card {{ colorPS }}">
+            <img src="/static/assets/img/aire.png" alt="Preconditioning Status">
             <p><strong>Estado de precondicionamiento:</strong> {{ preconditioning_status }}</p>
         </div>
     {% endif %}
 </div>
+<div id="mapid"></div>
 <div class="data-links">
     <a href="/data/battery_voltage">Historial voltaje</a>
     <a href="/data/autonomy">Historial autonomía</a>
@@ -256,19 +258,14 @@
     <div class="loader"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         try {
-            // Mostrar el mensaje de carga al inicio
             document.getElementById('loading').style.display = 'block';
-
-            // Ocultar el mensaje de carga después de cargar los datos
             document.getElementById('loading').style.display = 'none';
-
-
         } catch (error) {
             console.error('Error al crear los gráficos:', error);
-            // Ocultar el mensaje de carga si hay un error
             document.getElementById('loading').style.display = 'none';
         }
     });
@@ -277,7 +274,20 @@
         window.location.href = url;
     }
 
+    // Inicialización del mapa
+    var coordinates = [{{ coordinates[0] }}, {{ coordinates[1] }}]; // Leaflet usa el formato [lat, lon]
+    var mymap = L.map('mapid').setView(coordinates, 13);
 
+    // Capa de tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+    }).addTo(mymap);
+
+    // Marcador
+    L.marker(coordinates).addTo(mymap)
+        .bindPopup('Ubicación del vehículo')
+        .openPopup();
 </script>
 <footer>
     <a href="https://www.flaticon.es/iconos-gratis/alto-voltaje" title="alto voltaje iconos">Flaticon</a>
