@@ -21,23 +21,21 @@ docker pull fletsv/sensorstatsamd64
 ### 3. Crear Carpetas y Archivos Necesarios
 
 - Crea una carpeta `data` donde desees almacenar tus datos.
-- Dentro de la carpeta `data`, crea dos archivos:
-  - `historical_data.json`
-  - `data.json`
+- Dentro de la carpeta `data`
 
 ### 4. Ejecutar la Imagen desde la Línea de Comandos
 
 - Ejecuta el siguiente comando para poner en marcha el contenedor:
 
 
-`docker run -d --name sensorstats -p 5006:8080 -e TZ=Europe/Madrid -v $(pwd)/data:/app/data/historialDatos fletsv/sensorstatsamd64`
+`docker run -d --name sensorstats -p {Puertodeseado}:8080 -e TZ=Europe/Madrid -v $(pwd)/data:/app/data/historialDatos fletsv/sensorstatsamd64`
 
 ### 5. Ejecutar la Imagen desde el Gestor Cliente de Docker
 
 - Abre el gestor cliente de Docker.
 - Selecciona la opción para ejecutar o iniciar la imagen.
 - Asigna un nombre al contenedor, por ejemplo, `sensorstats`.
-- Añade el puerto del contenedor: `5006` en el host y `8080` en el contenedor.
+- Añade el puerto del contenedor: `puertoDeseado` en el host y `8080` en el contenedor.
 - Mapea la carpeta `data` dentro del contenedor en volumen y dentro del contenedor como `/app/data/historialDatos`.
 - Inicia el contenedor.
 
@@ -47,8 +45,8 @@ docker pull fletsv/sensorstatsamd64
 
 ## Configuración Inicial
 
-- Si es la primera vez que abres el programa, deberás configurar la dirección y el VIM correspondiente desde `psaCarController`.
+- Si es la primera vez que abres el programa, deberás configurar la dirección y el VIM correspondiente desde `psaCarController` correspondiente a la instalación de docker en "https://github.com/flobz/psa_car_controller".
+seguir "https://github.com/flobz/psa_car_controller/blob/master/docs/Docker.md" para tener los controladores y instalar el mio para visualizar los datos  a detalle y historiales.
 - Esta configuración se almacenará para futuros usos.
 
 ¡Y eso es todo! Ahora deberías tener `SensorStats` funcionando en tu contenedor Docker.
-
