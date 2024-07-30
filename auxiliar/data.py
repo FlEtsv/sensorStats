@@ -5,17 +5,25 @@ import os
 import requests
 
 
+import requests
+
 def get_data(api_url):
     try:
         response = requests.get(api_url)
-        response.raise_for_status()  # Lanza un error HTTP si la respuesta no es exitosa
-
-        data = response.json()
-        return data
-    except requests.exceptions.RequestException as e:
-        print(f"Error obteniendo los datos: {e}")
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        print(f"Error fetching data from API: {e}")
         return None
 
+def get_data_boolean(api_url):
+    try:
+        response = requests.get(api_url)
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        print(f"Error fetching data from API: {e}")
+        return False
 
 def save_to_historical_data(data):
     historical_data = []

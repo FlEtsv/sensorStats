@@ -39,9 +39,9 @@ def evaluar(value, data_type):
 
 def evaluarIndex(value, data_type):
     if data_type == 'battery_voltage':
-        if 330 <= value <= 360:
+        if (82.5<= value <= 90):
             return 'chart-card-amarillo'
-        elif value < 330:
+        elif value < 82.5:
             return 'chart-card-rojo'
         else:
             return 'chart-card-verde'

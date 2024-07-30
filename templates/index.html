@@ -132,16 +132,18 @@
             background-color: #358fd1;
         }
         footer {
-            color: black;
-            position: fixed;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            background-color: rgba(122, 122, 128, 0.5);
-            color: white;
-            font-size: 12px;
-            padding: 5px 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                font-size: 10px;
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                text-align: center;
+                background-color: rgba(122, 122, 128, 0.5);
+                color: white;
+                padding: 5px 5px;
         }
         @media (max-width: 768px) {
             .data-container {
@@ -171,8 +173,18 @@
                 margin-bottom: 15px;
             }
             footer {
-                margin-top: 50px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
                 font-size: 10px;
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                text-align: center;
+                background-color: rgba(122, 122, 128, 0.5);
+                color: white;
+                padding: 5px 0;
             }
         }
         #mapid {
@@ -180,6 +192,14 @@
             width: 600px;
             margin-top: 20px;
             margin-bottom: 20px;
+        }
+        .bot{
+            padding: 10px 20px;
+            background-color: #91f17f;
+            color: #6bf16b;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
         }
     </style>
 </head>
@@ -253,6 +273,7 @@
     <a href="/data/acceleration">Historial aceleración</a>
     <a href="/data/speed">Historial velocidad</a>
     <a href="/data/mileage">Historial kilometraje</a>
+    <a class="bot" href="/configuracionBot">Configurar Bot</a>
 </div>
 <div id="loading" style="display: none;">
     <div class="loader"></div>
@@ -291,6 +312,7 @@
 </script>
 <footer>
     <a href="https://www.flaticon.es/iconos-gratis/alto-voltaje" title="alto voltaje iconos">Flaticon</a>
+    <p>Version{{ version }}</p>
 </footer>
 </body>
 </html>
