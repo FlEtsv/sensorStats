@@ -1,113 +1,27 @@
 import atexit
+import json
 import logging
-import traceback
+import os
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-import json
-import os
-import requests
-import datetime
 
-import auxiliar.utilidades
+from auxiliar.Api.conexion import api_cn
+from auxiliar.Api.get_datos import api_bp
+import auxiliar
+from flask import Flask, jsonify, request, redirect, url_for, render_template
+
 from auxiliar import sesion
 from auxiliar.action import evaluar, evaluarIndex
 from auxiliar.data import get_data, save_to_historical_data, get_historical_data, get_data_boolean
-from auxiliar.manipulacionDatos.sqlite import guardarDatosWeb, create_database
+from auxiliar.manipulacionDatos.sqlite import create_database, guardarDatosWeb
 from auxiliar.reloadData import tarea_programada
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
+app.register_blueprint(api_bp)
+app.register_blueprint(api_cn)
 
-#ruta para el bot obtenga los datos
-@app.route('/get_data_bot', methods=['GET'])
-def get_data_bot():
-    try:
-        api = auxiliar.utilidades.construirAPI(sesion.session.get_instance().get_ip_port(), sesion.session.get_instance().get_vin())
-        data = get_data(api)
-        if data:
-            last_position = data.get('last_position', {}).get('geometry', {}).get('coordinates', [0, 0])
-            coordinates = [last_position[1], last_position[0]]  # Leaflet uses [lat, lon]
-            battery_voltage = data.get('battery', {}).get('voltage', 0)
-            energy = data.get('energy', [{}])[0]
-            autonomy = energy.get('autonomy', 0)
-            charging = energy.get('charging', {})
-            charging_mode = charging.get('charging_mode', "N/A")
-            charging_status = charging.get('status', "N/A")
-            level = energy.get('level', 0)
-            environment = data.get('environment', {})
-            air_temp = environment.get('air', {}).get('temp', 0)
-            luminosity_day = environment.get('luminosity', {}).get('day', False)
-            kinetic = data.get('kinetic', {})
-            acceleration = kinetic.get('acceleration', 0)
-            speed = kinetic.get('speed', 0)
-            preconditioning = data.get('preconditionning', {}).get('air_conditioning', {})
-            preconditioning_status = preconditioning.get('status', "N/A")
-            mileage = data.get('timed_odometer', {}).get('mileage', 0)
 
-            save_to_historical_data({
-                'battery_voltage': battery_voltage,
-                'autonomy': autonomy,
-                'charging_mode': charging_mode,
-                'charging_status': charging_status,
-                'level': level,
-                'air_temp': air_temp,
-                'luminosity_day': luminosity_day,
-                'acceleration': acceleration,
-                'speed': speed,
-                'preconditioning_status': preconditioning_status,
-                'mileage': mileage
-            })
-            return jsonify({
-                'voltaje': battery_voltage,
-                'autonomia': autonomy,
-                'modo_carga': charging_mode,
-                'estatus_carga': charging_status,
-                'nivel': level,
-                'temperatura': air_temp,
-                'luces_dia': luminosity_day,
-                'aceleracion': acceleration,
-                'velocidad': speed,
-                'estado_precon': preconditioning_status,
-                'kilometros': mileage,
-                'coordenadas': coordinates,
-                'test_value': 12  # Add a test value for the test case
-            }), 200
-        else:
-            return jsonify({
-                'Error': 'Error obteniendo los datos.',
-                'voltaje': 0,
-                'autonomia': 0,
-                'modo_carga': "N/A",
-                'estatus_carga': "N/A",
-                'nivel': 0,
-                'temperatura': 0,
-                'luces_dia': False,
-                'aceleracion': 0,
-                'velocidad': 0,
-                'estado_precon': "N/A",
-                'kilometros': 0,
-                'coordenadas': [0, 0],
-                'test_value': 12  # Add a test value for the test case
-            }), 200
-    except Exception as e:
-        print(f"Error en la representación de los datos: {e}")
-        return jsonify({
-                'Error': 'Error obteniendo los datos.',
-                'voltaje': 0,
-                'autonomia': 0,
-                'modo_carga': "N/A",
-                'estatus_carga': "N/A",
-                'nivel': 0,
-                'temperatura': 0,
-                'luces_dia': False,
-                'aceleracion': 0,
-                'velocidad': 0,
-                'estado_precon': "N/A",
-                'kilometros': 0,
-                'coordenadas': [0, 0],
-                'test_value': 12  # Add a test value for the test case
-            }), 200
 @app.route('/bot', methods=['GET', 'POST'])
 def bot():
     if request.method == 'POST':
@@ -153,7 +67,7 @@ def connect():
     try:
         # Log the request form data
         print(f"Request form data: {request.form}")
-        # Log the session updates
+        # Log the sesion updates
         vin = request.form['vin']
         ip_port = request.form['ip_port']
 
@@ -164,22 +78,22 @@ def connect():
             # Save the connection data to data.json
             with open(file_path, 'w') as f:
                 json.dump(request.form.to_dict(), f)
-            sesion.session.get_instance().set_vin(vin)
-            sesion.session.get_instance().set_ip_port(ip_port)
+            sesion.sesion.get_instance().set_vin(vin)
+            sesion.sesion.get_instance().set_ip_port(ip_port)
 
             # guardar estos datos en el json
             return redirect(url_for('index_get')), 302
         else:
             vin = ''
             ip_port = ''
-            sesion.session.get_instance().set_vin(vin)
-            sesion.session.get_instance().set_ip_port(ip_port)
+            sesion.sesion.get_instance().set_vin(vin)
+            sesion.sesion.get_instance().set_ip_port(ip_port)
             return redirect(url_for('index_get')), 302
 
 
 
-        print(f"Setting session VIN: {vin}")
-        print(f"Setting session IP/Port: {ip_port}")
+        print(f"Setting sesion VIN: {vin}")
+        print(f"Setting sesion IP/Port: {ip_port}")
 
     except Exception as e:
         print(f"Error in connect route: {e}")
@@ -210,9 +124,9 @@ def index_get():
 
     ip_port = data.get('ip_port', '')
     vin = data.get('vin', '')
-    sesion.session.get_instance().clear()
-    sesion.session.get_instance().set_ip_port(ip_port)
-    sesion.session.get_instance().set_vin(vin)
+    sesion.sesion.get_instance().clear()
+    sesion.sesion.get_instance().set_ip_port(ip_port)
+    sesion.sesion.get_instance().set_vin(vin)
 
     # Initialize default variables
     battery_voltage = 0
@@ -334,8 +248,8 @@ def index_post():
         logging.error(f"Error escribiendo data.json: {e}")
         return jsonify({"error": "Error guardando los datos"}), 200
 
-    sesion.session.get_instance().set_vin(request.form['vin'])
-    sesion.session.get_instance().set_ip_port(request.form['ip_port'])
+    sesion.sesion.get_instance().set_vin(request.form['vin'])
+    sesion.sesion.get_instance().set_ip_port(request.form['ip_port'])
     return redirect(url_for('index')), 302
 
 

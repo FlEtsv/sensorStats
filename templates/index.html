@@ -18,7 +18,7 @@
             align-items: center;
             min-height: 100vh;
             flex-direction: column;
-            padding-bottom: 60px; /* Ajusta este valor según la altura de tu footer */
+
         }
         h1 {
             font-size: 2rem;
@@ -132,18 +132,19 @@
             background-color: #358fd1;
         }
         footer {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                font-size: 10px;
-                position: fixed;
-                left: 0;
-                bottom: 0;
-                text-align: center;
-                background-color: rgba(122, 122, 128, 0.5);
-                color: white;
-                padding: 5px 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            font-size: 10px;
+            position: relative;
+            left: 0;
+            bottom: 0;
+            text-align: center;
+            background-color: rgba(122, 122, 128, 0.5);
+            color: white;
+            padding: 5px 0;
+            margin-top: 20px;
         }
         @media (max-width: 768px) {
             .data-container {
@@ -178,13 +179,14 @@
                 align-items: center;
                 width: 100%;
                 font-size: 10px;
-                position: fixed;
+                position: relative;
                 left: 0;
                 bottom: 0;
                 text-align: center;
                 background-color: rgba(122, 122, 128, 0.5);
                 color: white;
                 padding: 5px 0;
+                margin-top: 20px;
             }
         }
         #mapid {

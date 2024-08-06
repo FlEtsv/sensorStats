@@ -15,4 +15,4 @@ def sacarCoordenadas(data):
         except Exception as e:
             print(f"Error sacando coordenadas: {e}")
 
-    return [], sesion.session.get_instance().set_coordenadas([])
+    return [], sesion.sesion.get_instance().set_coordenadas([])

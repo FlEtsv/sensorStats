@@ -1,22 +1,22 @@
-class session:
+class sesion:
     __instance = None
     vin = ''
     ip_port = ''
     coordenadas = []
 
     def __init__(self, vin='', ip_port=''):
-        if session.__instance is not None:
+        if sesion.__instance is not None:
             raise Exception("Esta clase es un singleton!")
         else:
             self.vin = vin
             self.ip_port = ip_port
-            session.__instance = self
+            sesion.__instance = self
 
     @staticmethod
     def get_instance():
-        if session.__instance is None:
-            session()
-        return session.__instance
+        if sesion.__instance is None:
+            sesion()
+        return sesion.__instance
 
     def set_vin(self, vin):
         self.vin = vin
