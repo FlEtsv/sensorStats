@@ -125,10 +125,8 @@
                 font-size: 0.9rem; /* Tamaño de fuente más pequeño en botón para dispositivos móviles */
             }
         }
-
-
     </style>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
 <body>
     <div class="content">
@@ -143,7 +141,7 @@
             <tbody>
                 {% for entry in data %}
                 <tr class="{{ entry.color }}">
-                    <td>{{ entry.timestamp }}</td>
+                    <td id="fecha-{{ loop.index }}"></td>
                     <td>{{ entry.value }}</td>
                 </tr>
                 {% endfor %}
@@ -165,19 +163,18 @@
         // Obtén los datos del servidor renderizados por Flask
         const data = {{ data|tojson }};
 
-        //ordenar de fecha mas antigua a fecha mas reciente
-        data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+        // Ordenar de fecha más reciente a fecha más antigua
+        data.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
         // Extrae solo los valores de los datos, ignorando las fechas
         const values = data.map(entry => entry.value);
-
 
         // Crea el gráfico de barras
         const ctx = document.getElementById('myChart').getContext('2d');
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: Array(values.length).fill(''), // Etiquetas vacías ya que no queremos mostrar las fechas
+                labels: data.map(entry => moment(entry.timestamp).format('MMMM Do YYYY, h:mm:ss a')), // Mostrar fechas en etiquetas
                 datasets: [{
                     label: '{{ data_type }}',
                     data: values,
@@ -193,6 +190,15 @@
                     }
                 }
             }
+        });
+
+        // Formatear fechas usando Moment.js
+        document.addEventListener('DOMContentLoaded', (event) => {
+            data.forEach((entry, index) => {
+                const timestamp = entry.timestamp;
+                const formattedDate = moment(timestamp, 'YYYY-MM-DDTHH:mm:ss.SSSSSS').format('MMMM Do YYYY, h:mm:ss a');
+                document.getElementById(`fecha-${index + 1}`).innerText = formattedDate;
+            });
         });
     </script>
 </body>

@@ -98,4 +98,20 @@ def get_historical_data(data_type):
 
     return filtered_data
 
-#metodo que accede a data.json que esta en data/historialDatos/data.json y obtiene el ip_port y vin
+def obtenerTimestampsMasReciente():
+    historical_data = []
+
+    if os.path.exists('data/historialDatos/historical_data.json'):
+        with open('data/historialDatos/historical_data.json', 'r') as f:
+            try:
+                historical_data = json.load(f)
+            except json.JSONDecodeError:
+                print("Error decodificando historical_data.json")
+                historical_data = []
+
+    timestamps = [entry['timestamp'] for entry in historical_data]
+
+    if timestamps:
+        return max(timestamps)
+    else:
+        return None
