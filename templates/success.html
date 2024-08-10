@@ -2,76 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Success</title>
+    <title>Dialogo</title>
     <style>
-body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    flex-direction: column;
-}
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e6bb8, #1ea6b8);
+            color: white;
+            overflow: hidden;
+        }
 
-.SuccesCode {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    text-align: center;
-    border: 2px solid #4CAF50; /* Add border */
-    animation: fadeIn 1s ease-in-out; /* Add animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
 
-}
+        @keyframes slideIn {
+            from { transform: translateY(50px); }
+            to { transform: translateY(0); }
+        }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.SuccesCode h1 {
-    color: #4CAF50;
-    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
-    font-size: 24px;
-    margin-bottom: 10px;
+        .dialog {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 400px;
+        }
 
-}
-.SuccesCode p {
-    font-size: 16px;
-    margin-bottom: 10px;
+        .dialog h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            animation: slideIn 0.8s ease-out;
+        }
 
-}
-.SuccesCode button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 10px;
-    text-decoration: none;
-    animation: blink 1s infinite; /* Add animation */
-}
+        .dialog p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            animation: slideIn 1s ease-out;
+        }
+
+        .dialog button {
+            padding: 12px 24px;
+            background-color: #1ea6b8;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .dialog button:hover {
+            background-color: #16b7a8;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .dialog button:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dialog::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+            border-radius: 15px;
+            pointer-events: none;
+            opacity: 0.7;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes parpadeo {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+        }
+
+        .parpadeo {
+            animation: parpadeo 1s infinite;
+        }
     </style>
 </head>
 <body>
-    <div class="SuccesCode">
-        <h1>¡Registro exitoso!</h1>
-        <p>Gracias tu registro ha sido exitoso.</p>
-        <p>tu codigo de registro es: <strong>{{ codigoVerificacion }}</strong></p>
+    <div class="dialog">
+        <h1>{{ tipoAviso }}</h1>
+        <p id="message">{{ mensajeUsuario }}</p>
+        <p>Tu código de verificación es: <strong class="parpadeo">{{ codigoVerificacion }}</strong></p>
         <button>
-            <a href="/" METHODS="GET">listo</a>
+            <a href="/" method="GET">Aceptar</a>
         </button>
     </div>
 </body>
