@@ -1,0 +1,76 @@
+.mapaYBot {
+    width: 90%; /* Reduce el ancho general del contenedor principal para dar más espacio en los lados */
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    text-align: center;
+    margin: 0 auto; /* Centra el contenedor en la página */
+}
+
+#mapid {
+    display: inline-block;
+    vertical-align: top;
+    height: 350px; /* Reduce la altura del mapa */
+    width: 45%; /* Reduce el ancho para dejar más espacio entre los elementos */
+    margin-right: 5%; /* Añade espacio entre el mapa y el contenedor del botón */
+    box-sizing: border-box;
+}
+
+.contenedorBotonBot {
+    display: inline-block;
+    vertical-align: top;
+    background: linear-gradient(135deg, #1e6bb8, #1ea6b8);
+    border-radius: 15px;
+    padding: 30px; /* Reduce el padding del contenedor */
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    color: white;
+    width: 45%; /* Reduce el ancho para dejar más espacio entre los elementos */
+    box-sizing: border-box;
+    min-height: 350px; /* Reduce la altura mínima para ajustarse a la nueva altura del mapa */
+    margin: 0;
+}
+
+.contenedorBotonBot p {
+    font-size: 22px; /* Reduce el tamaño de la fuente */
+    margin-bottom: 20px; /* Ajusta el margen inferior */
+    font-weight: bold;
+    animation: slideIn 0.8s ease-out;
+}
+
+@keyframes parpadeoBoton {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+.botonBot {
+    background-color: #ff6b6b;
+    color: white;
+    padding: 15px 30px; /* Reduce el tamaño del botón */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 20px; /* Reduce el tamaño de la fuente del botón */
+    font-weight: bold;
+    text-transform: uppercase;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    animation: parpadeoBoton 1.5s infinite;
+}
+
+.botonBot:hover {
+    background-color: #ff5252;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.botonBot:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}

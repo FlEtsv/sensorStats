@@ -6,6 +6,7 @@
     <title>Datos de vehículo</title>
     <link rel="icon" href="/static/assets/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="/static/assets/styles/MapaYBot.css">
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -220,20 +221,8 @@
                 margin-top: 20px;
             }
         }
-        #mapid {
-            height: 400px;
-            width: 600px;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        .bot{
-            padding: 10px 20px;
-            background-color: #91f17f;
-            color: #6bf16b;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
+
+
 
 
 
@@ -304,7 +293,12 @@
         </div>
     {% endif %}
 </div>
-<div id="mapid"></div>
+<div class="mapaYBot">
+    <div id="mapid"></div>
+    <div class="contenedorBotonBot">
+        <p>¿Quieres tener los datos de tu coche por Telegram?</p>
+        <button class="botonBot" onclick="location.href='/configuracionBot'">Configurar Bot</button>
+</div>
 <div class="data-links">
     <a href="/data/battery_voltage">Historial voltaje</a>
     <a href="/data/autonomy">Historial autonomía</a>
@@ -313,7 +307,7 @@
     <a href="/data/acceleration">Historial aceleración</a>
     <a href="/data/speed">Historial velocidad</a>
     <a href="/data/mileage">Historial kilometraje</a>
-    <a class="bot" href="/configuracionBot">Configurar Bot</a>
+
 </div>
 <div id="loading" style="display: none;">
     <div class="loader"></div>

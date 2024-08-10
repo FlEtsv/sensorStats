@@ -109,7 +109,7 @@ def render_index_template(context, ultimaActualizacion=None):
         mileage=context['mileage'],
         error=context['error'],
         coordinates=context['coordinates'],
-        version='1.4.3',
+        version='1.4.5',
         ultimaActualizacion=ultimaActualizacion
 
     ), 200
