@@ -1,10 +1,10 @@
 from flask import jsonify, Blueprint
 
-from auxiliar.Api.get_datos import api_bp
 from auxiliar.data import get_data_boolean
-from auxiliar.manipulacionDatos.sqlite import verificarConexionBaseDatos
+from auxiliar.manipulacionDatos.BD.repository import MetodosDatabase
 from auxiliar.sesion import sesion
 from auxiliar.utilidades import construirAPI
+db_methods = MetodosDatabase()
 
 api_cn = Blueprint('api_cn', __name__)
 
@@ -27,7 +27,7 @@ def chequeoSalud():
     if api is False:
         return False
     # verificamos la conexion a la base de datos
-    if verificarConexionBaseDatos() is False:
+    if db_methods.verificarConexionBaseDatos() is False:
         return False
 
     return True

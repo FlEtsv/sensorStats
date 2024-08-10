@@ -23,13 +23,31 @@ def read_data_from_file(file_path):
             data = {}
     return data
 
+# indexBack.py
 def set_session_data(data):
     ip_port = data.get('ip_port', '')
     vin = data.get('vin', '')
-    sesion.get_instance().clear()
-    sesion.get_instance().set_ip_port(ip_port)
-    sesion.get_instance().set_vin(vin)
+    sesion_instance = sesion.get_instance()
+    sesion_instance.set_ip_port(ip_port)
+    sesion_instance.set_vin(vin)
+    #depuracion para saber si se esta guardando correctamente
+    logging.debug(f"ip_port: {sesion_instance.get_ip_port()}")
+    logging.debug(f"vin: {sesion_instance.get_vin()}")
+
+
     return ip_port, vin
+
+def preparativos():
+
+    data = read_data_from_file('data/historialDatos/data.json')
+    if data:
+
+        ip_port, vin = set_session_data(data)
+    else:
+         logging.debug("no datos")
+    logging.debug("Preparativos completados")
+
+
 
 def initialize_default_variables():
     return {
@@ -51,9 +69,13 @@ def initialize_default_variables():
 
 def fetch_and_process_vehicle_data(ip_port, vin):
     api_url = f"http://{ip_port}/get_vehicleinfo/{vin}?from_cache=1"
+
     data = get_data(api_url)
     if data:
         try:
+            sesion_instance = sesion.get_instance()
+            sesion_instance.set_vin(vin)
+            sesion_instance.set_ip_port(ip_port)
             return extract_vehicle_data(data)
         except Exception as e:
             logging.error(f"Error in data representation: {e}")
@@ -87,7 +109,7 @@ def render_index_template(context, ultimaActualizacion=None):
         mileage=context['mileage'],
         error=context['error'],
         coordinates=context['coordinates'],
-        version='1.4.0',
+        version='1.4.3',
         ultimaActualizacion=ultimaActualizacion
 
     ), 200

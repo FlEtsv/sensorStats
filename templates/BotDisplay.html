@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <title>Configuracion Bot</title>
     <link rel="icon" href="/static/assets/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/assets/styles/panelConfiguracionBotTrue.css">
+    <link rel="stylesheet" href="/static/assets/styles/backButton.css">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -37,7 +42,7 @@
         label {
             font-size: 1.2rem;
             margin-bottom: 15px;
-            color: #000000;
+            color: #ffffff;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Sombra suave */
             transition: color 0.3s, transform 0.3s ease-in-out; /* Transición de color y transformación */
         }
@@ -46,12 +51,13 @@
             transform: scale(1.05); /* Escalado sutil al hacer hover */
         }
         input[type="text"] {
-            width: 100%;
+            width: 80%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
+
         }
         input[type="submit"] {
             padding: 10px 20px;
@@ -80,36 +86,114 @@
     </style>
 </head>
 <body>
-    <div class="content">
-        <h1>Configuración del Bot</h1>
-        <div class="explicación">
-            <p>
-                Para poder utilizar el bot, necesitas configurar el nombre y el token del bot.
-                Si no tienes un bot, puedes crear uno en <a href="https://core.telegram.org/bots#3-how-do-i-create-a-bot">Telegram</a>.
+{% if  botEstaRegistrado  == False %}
+    <div>
+        <div class="content">
+            <h1>Configuración del Bot</h1>
+            <div class="explicación">
+                <p>
+                    Para poder utilizar el bot, necesitas configurar el nombre y el token del bot.
+                    Si no tienes un bot, puedes crear uno en <a href="https://core.telegram.org/bots#3-how-do-i-create-a-bot">Telegram</a>.
+                </p>
+                <p>
+                    Una vez que tengas el bot, copia el token y pégalo en el campo correspondiente.
+                    El nombre del bot es el nombre que le diste al bot cuando lo creaste.
+                </p>
+                <p>
+                    Una vez que hayas configurado el bot, puedes utilizarlo para enviar mensajes a través de Telegram. para recibir tus datos.
+                </p>
+            </div>
+        </div>
 
-            </p>
-            <p>
-                Una vez que tengas el bot, copia el token y pégalo en el campo correspondiente.
-                El nombre del bot es el nombre que le diste al bot cuando lo creaste.
-            </p>
-            <p>
-                Una vez que hayas configurado el bot, puedes utilizarlo para enviar mensajes a través de Telegram. para recibir tus datos.
-
-            </p>
+        <div class="container">
+            <!-- un formulario para configurar el bot -->
+            <form action="/bot/bot" method="post">
+                <label for="name">Nombre del Bot:</label>
+                <input type="text" name="name" id="name" required>
+                <label for="token">Token del Bot:</label>
+                <input type="text" name="token" id="token" required>
+                <label for="Numero">Numero de Telefono:</label>
+                <input type="text" name="Numero" id="Numero" required>
+                <input type="submit" value="Guardar">
+            </form>
         </div>
     </div>
-
-    <div class="container">
-        <!-- un formulario para configurar el bot -->
-<form action="/bot" method="post">
-    <label for="name">Nombre del Bot:</label>
-    <input type="text" name="name" id="name" required>
-    <label for="token">Token del Bot:</label>
-    <input type="text" name="token" id="token" required>
-    <label for="Numero">Numero de Telefono:</label>
-    <input type="text" name="Numero" id="Numero" required>
-    <input type="submit" value="Guardar">
-</form>
+    <div class="button-container">
+        <a class="back-button" onclick="history.back()">Volver</a>
     </div>
+{% else %}
+    <div class="contentBotConfiguracion">
+        <div class="explicacion">
+            <h1>Explicacion</h1>
+            <div class="explicaciónText">
+                <p>
+                    Una vez el bot este creado y configurado, puedes enviar mensajes a traves de telegram para recibir tus datos.
+                </p>
+                <p>
+                    Este menu recupera un conjunto de variables que nos puede notificar el bot. Si alguna la ves innecesaria puedes
+                    desmarcarla y no se te notificara. Ademas, puedes suministrar el periodo de notificacion.
+                </p>
+                <p>
+                    Comandos del bot:
+                <ul>
+                    <li>/start: Inicia la conversación con el bot.</li>
+                    <li>/ip : Configuracion de la ip y el puerto donde el bot hará las peticiones</li>
+                    <li>/datos : Obtienes datos de estado del vehiculo</li>
+                    <li>/cancel : Reinicia el comando al principio</li>
+                    <li>/help : Muestra los comandos disponibles</li>
+                </ul>
+                </p>
+
+                <p>
+                    WARNING: Si eliminas el bot, perderas la configuracion y no podras recibir notificaciones
+
+                </p>
+                <p>
+                    Para eliminar el bot, pulsa el boton de arriba que pone eliminar Bot, esto eliminará todo lo relacionado con el bot.
+                </p>
+                <p>
+                    Como se puede observar el bot desde el inicio no manda notificaciones de los valores limite, esta configurado por
+                    defecto para que no mande notificaciones salvo que el usuario las pida (/datos). Pero esto cambia a apartir del momento en el que marcamos una variable
+                    y le damos un valor limite, a partir de ese momento el bot mandara notificaciones cada vez que el valor limite se sobrepase o se iguale, este servicio se realiza mediante
+                    los datos ya recopilados por la web, por lo que es necesario tener la web funcionando para que el bot pueda mandar notificaciones.
+
+                </p>
+
+                <p>
+                    Los valores del bot no se deben introducir con unidades, solo el valor numerico, el bot ya tiene predefinido las unidades de cada variable.
+                </p>
+
+
+            </div>
+
+        </div>
+        <div class="PanelControl">
+            <h1>Configuración del Bot</h1>
+            <button onclick="location.href='/bot/eliminar'">Eliminar Bot</button>
+            <form action="/api/configBot" method="POST">
+                <label for="notificaciones">Edicion notificación</label>
+                <br>
+                <label for="voltaje">Voltaje</label>
+                <input type="checkbox" name="voltaje_active" id="voltaje" >
+                <input type="Text" name="voltaje_valor" id="voltaje_limite" placeholder="350V">
+                <label for="bateria">Bateria</label>
+                <input type="checkbox" name="bateria_active" id="bateria" >
+                <input type="Text" name="bateria_valor" id="bateria_limite" placeholder="30%">
+                <label for="temperatura">Temperatura</label>
+                <input type="checkbox" name="temperatura_active" id="temperatura" >
+                <input type="Text" name="temperatura_valor" id="temperatura_limite" placeholder="35C">
+                <label for="autonomia">Autonomia</label>
+                <input type="checkbox" name="autonomia_active" id="autonomia" >
+                <input type="Text" name="autonomia_valor" id="autonomia_limite" placeholder="100Km">
+                <label for="kilometraje">Kilometraje</label>
+                <input type="checkbox" name="kilometraje_active" id="kilometraje" >
+                <input type="Text" name="kiometraje_valor" id="Kilometraje_limite" placeholder="100000Km">
+                <input type="submit" value="Guardar">
+            </form>
+        </div>
+    </div>
+        <div class="button-container">
+        <a class="back-button" onclick="history.back()">Volver</a></div>
+{% endif %}
 </body>
 </html>

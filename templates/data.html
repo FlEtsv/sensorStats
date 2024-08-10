@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial</title>
     <link rel="icon" href="/static/assets/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/assets/styles/backButton.css">
     <style>
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
@@ -81,24 +82,6 @@
         .chart:hover {
             transform: scale(1.02); /* Escalado sutil al hacer hover */
         }
-        .button-container {
-            margin-top: 20px;
-        }
-        .back-button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
-            background-color: #358fd1;
-            color: white;
-            cursor: pointer;
-            text-decoration: none;
-            transition: background-color 0.3s, transform 0.2s ease-in-out; /* Transición de color y transformación */
-        }
-        .back-button:hover {
-            background-color: #1e6bb8; /* Cambio de color suave al hacer hover */
-            transform: translateY(-2px); /* Movimiento hacia arriba al hacer hover */
-        }
         .rojo { background-color: #ffcccc; }
         .amarillo { background-color: #ffff99; }
         .verde { background-color: #ccffcc; }
@@ -153,7 +136,7 @@
             </div>
         </div>
         <div class="button-container">
-            <a href="/" class="back-button">Volver</a>
+            <a class="back-button" onclick="history.back()">Volver</a>
         </div>
     </div>
 

@@ -1,16 +1,13 @@
+# sesion.py
+import threading
+
+
 class sesion:
     __instance = None
-    vin = ''
-    ip_port = ''
-    coordenadas = []
-
-    def __init__(self, vin='', ip_port=''):
-        if sesion.__instance is not None:
-            raise Exception("Esta clase es un singleton!")
-        else:
-            self.vin = vin
-            self.ip_port = ip_port
-            sesion.__instance = self
+    __lock = threading.Lock()
+    vin = None
+    ip_port = None
+    coordenadas = None
 
     @staticmethod
     def get_instance():
@@ -18,16 +15,22 @@ class sesion:
             sesion()
         return sesion.__instance
 
+    def __init__(self):
+        if sesion.__instance is not None:
+            raise Exception("Esta clase es un singleton!")
+        else:
+            sesion.__instance = self
+
     def set_vin(self, vin):
         self.vin = vin
 
-    def get_vin(self):
+    def get_vin(self) -> str:
         return self.vin
 
     def set_ip_port(self, ip_port):
         self.ip_port = ip_port
 
-    def get_ip_port(self):
+    def get_ip_port(self) -> str:
         return self.ip_port
 
     def clear(self):

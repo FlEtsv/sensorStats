@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dialogo</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1e6bb8, #1ea6b8);
+            color: white;
+            overflow: hidden;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(50px); }
+            to { transform: translateY(0); }
+        }
+
+        .dialog {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .dialog h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .dialog p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            animation: slideIn 1s ease-out;
+        }
+
+        .dialog button {
+            padding: 12px 24px;
+            background-color: #1ea6b8;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .dialog button:hover {
+            background-color: #16b7a8;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .dialog button:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dialog::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+            border-radius: 15px;
+            pointer-events: none;
+            opacity: 0.7;
+            animation: fadeIn 1.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="dialog">
+        <h1>{{ tipoAviso }}</h1>
+        <p id="message">{{ mensajeUsuario }}</p>
+        <button onclick="location.href='/configuracionBot'"> Aceptar</button>
+    </div>
+</body>
+</html>

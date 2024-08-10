@@ -1,45 +1,47 @@
-import atexit
-import atexit
+
 import json
 import logging
 import os
-import threading
 import time
 
-from flask import Flask, jsonify, request, redirect, url_for, render_template
+from flask import Flask, jsonify, request, redirect, url_for, render_template, Blueprint, make_response, \
+    send_from_directory
 
 import auxiliar
-from auxiliar import sesion
-from auxiliar.action import evaluar, evaluarIndex
-from auxiliar.data import get_data, save_to_historical_data, get_historical_data, get_data_boolean, \
+from auxiliar import sesion, reloadData
+from auxiliar.Api.conexion import api_cn
+from auxiliar.Api.configuracionBot import api_cb
+from auxiliar.Api.get_datos import api_bp
+from auxiliar.action import evaluar
+from auxiliar.data import save_to_historical_data, get_historical_data, get_data_boolean, \
     obtenerTimestampsMasReciente
 from auxiliar.indexBack.indexBack import read_data_from_file, set_session_data, initialize_default_variables, \
-    fetch_and_process_vehicle_data, render_index_template
-from auxiliar.manipulacionDatos.sqlite import create_database, guardarDatosWeb
-from auxiliar.reloadData import tarea_programada, run_periodic_task, initReload
+    fetch_and_process_vehicle_data, render_index_template, preparativos
+from bot.botView import bot_v
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'
+app.register_blueprint(api_cn)
+app.register_blueprint(api_cb)
+app.register_blueprint(api_bp)
 
-@app.route('/bot', methods=['GET', 'POST'])
-def bot():
-    if request.method == 'POST':
-        bot_name = request.form['name']
-        bot_token = request.form['token']
-        phone_number = request.form['Numero']
-        create_database()
-        codigoVerificacion = guardarDatosWeb(bot_name, bot_token, phone_number)
-        return redirect(url_for('success', codigoVerificacion=codigoVerificacion))
-    return render_template('BotDisplay.html')
+app.register_blueprint(bot_v)
 
-@app.route('/success/<codigoVerificacion>')
-def success(codigoVerificacion):
-    return render_template('success.html', codigoVerificacion=codigoVerificacion)
 
-@app.route('/configuracionBot')
-def configuracionBot():
-    return render_template('BotDisplay.html')
 
+@app.after_request
+def add_header(response):
+    if 'Cache-Control' not in response.headers:
+        response.cache_control.max_age = 3600  # Cache static files for 1 hour
+    return response
+
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    response = make_response(send_from_directory('static', filename))
+    response.cache_control.max_age = 3600  # Cache static files for 1 hour
+    return response
+
+# app.py
 @app.route('/data/<data_type>')
 def show_data(data_type):
     data = get_historical_data(data_type)
@@ -60,14 +62,13 @@ def connect():
         if get_data_boolean(auxiliar.reloadData.utilidades.construirAPI(ip_port, vin)):
             with open(file_path, 'w') as f:
                 json.dump(request.form.to_dict(), f)
-            sesion.sesion.get_instance().set_vin(vin)
-            sesion.sesion.get_instance().set_ip_port(ip_port)
+            sesion_instance = sesion.sesion.get_instance()
+            sesion_instance.set_vin(vin)
+            sesion_instance.set_ip_port(ip_port)
             return redirect(url_for('index_get')), 302
         else:
-            vin = ''
-            ip_port = ''
-            sesion.sesion.get_instance().set_vin(vin)
-            sesion.sesion.get_instance().set_ip_port(ip_port)
+            sesion_instance = sesion.sesion.get_instance()
+            sesion_instance.clear()  # Clear only if data fetch fails
             return redirect(url_for('index_get')), 302
     except Exception as e:
         logging.error(f"Error in connect route: {e}")
@@ -108,7 +109,9 @@ def index_post():
 
 
 
+
 if __name__ == '__main__':
-    initReload()
+    preparativos()
+    reloadData.ReloadData().initReload()
     port = int(os.environ.get('PORT', 5006))
     app.run(host='0.0.0.0', port=port, debug=True)
