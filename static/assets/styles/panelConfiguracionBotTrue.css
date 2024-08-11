@@ -19,6 +19,28 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+.PanelControl #eliminarBot{
+    font-size: 1.1rem;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #ff2800 0%, #9c1100 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: fadeIn 1s ease-in-out, pulse 2s infinite;
+    margin-left: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
 
 .explicacion {
     background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
@@ -36,16 +58,25 @@
     line-height: 1.5;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
-
 .PanelControl {
     background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
     color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.PanelControl:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .PanelControl h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 25px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    animation: fadeIn 1s ease-in-out;
 }
 
 .PanelControl label {
@@ -53,11 +84,13 @@
     margin: 15px 0 5px;
     font-size: 1.2rem;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    animation: slideIn 0.5s ease-in-out;
 }
 
 .PanelControl input[type="number"],
 .PanelControl input[type="checkbox"] {
     margin-bottom: 20px;
+    animation: fadeIn 1s ease-in-out;
 }
 
 .PanelControl input[type="number"] {
@@ -77,6 +110,7 @@
     font-size: 1.1rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
 .PanelControl input[type="submit"] {
@@ -98,4 +132,46 @@
 .PanelControl .btn-danger:hover {
     background-color: #c82333;
     transform: scale(1.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(-20px); }
+    to { transform: translateX(0); }
+}
+
+@media (max-width: 768px) {
+    .contentBotConfiguracion {
+        flex-direction: column;
+        width: 100%;
+        padding: 10px;
+        margin-left: 40px;
+    }
+    .explicacion, .PanelControl {
+        width: 100%;
+        margin: 10px 0;
+        padding-right: 0;
+        padding-left: 2px;
+    }
+    .PanelControl input[type="checkbox"] {
+        margin-bottom: 10px;
+        padding: 20px;
+    }
+    .PanelControl form {
+        width: 90%;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-content: space-between;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .PanelControl h1 {
+        padding-left: 25px;
+    }
+
+
 }

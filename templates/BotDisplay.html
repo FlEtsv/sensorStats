@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Configuracion Bot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/static/assets/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/static/assets/styles/panelConfiguracionBotTrue.css">
     <link rel="stylesheet" href="/static/assets/styles/backButton.css">
@@ -91,6 +92,16 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             border: black 1px solid;
         }
+        @media (max-width: 768px) {
+            .content {
+                margin-top: 3px;
+                margin-left: 3px;
+                width: 95%;
+                padding: 7px;
+            }
+
+        }
+
     </style>
 </head>
 <body>
@@ -104,11 +115,33 @@
                     Si no tienes un bot, puedes crear uno en <a href="https://core.telegram.org/bots#3-how-do-i-create-a-bot">Telegram</a>.
                 </p>
                 <p>
-                    Una vez que tengas el bot, copia el token y pégalo en el campo correspondiente.
+                    Debes entrar en Telegram y en el buscador de contactos buscar a <strong>BotFather</strong>. Una vez que lo encuentres, inicia una conversación con él y sigue las instrucciones para crear un bot,
+                    en este caso solo debemos darle al comando /newbot y seguido nos pedirá un nombre de bot y un nombre de usuario, una vez hecho esto nos dará un token que es el que debemos introducir en el campo correspondiente.
+                </p>
+                <p>
+                    Seguidamente copia el token y pégalo en el campo correspondiente.
                     El nombre del bot es el nombre que le diste al bot cuando lo creaste.
                 </p>
                 <p>
-                    Una vez que hayas configurado el bot, puedes utilizarlo para enviar mensajes a través de Telegram. para recibir tus datos.
+                    Es recomendable hacer primero el bot en Telegram y luego introducir los datos en la web. Después de hacer eso ya puedes instalar el bot en tu Docker y configurar las notificaciones.
+                    Para configurar el bot en el Docker te dejo las instrucciones específicas <a href="">configurar Bot Docker</a>.
+                </p>
+                <p>
+                    La instalación del bot en el Docker es muy sencilla, solo debes seguir los pasos que se indican en el enlace anterior y también te dejaré una mini guía por aquí:
+                <ul>
+                    <li>Primero debes tener el Docker instalado en tu máquina</li>
+                    <li>Segundo debes tener el docker-compose instalado en tu máquina</li>
+                    <li>Buscar dentro del buscador de imágenes o Docker Hub "fletsv/bottelegram:latest"</li>
+                    <li>La añadimos al contenedor donde queramos</li>
+                    <li>Debemos meter el nombre del contenedor</li>
+                    <li>Debemos añadir un volumen "CarpetaWeb" y "/app/data/historialDatos"</li>
+                    <li>Ejecutar</li>
+                    <li>Ya tienes el bot funcionando en tu máquina</li>
+                </ul>
+                </p>
+                <p>
+                    WARNING: El bot necesita alojar el volumen en el sistema, debes alojarlo en la misma carpeta que alojaste la web al instalarla.
+                    Si el bot se reinicia se deberá de configurar de nuevo el comando /ip para que el bot pueda hacer las peticiones a la web.
                 </p>
             </div>
         </div>
@@ -139,7 +172,7 @@
                 </p>
                 <p>
                     Este menu recupera un conjunto de variables que nos puede notificar el bot. Si alguna la ves innecesaria puedes
-                    desmarcarla y no se te notificara. Ademas, puedes suministrar el periodo de notificacion.
+                    desmarcarla y no se te notificará. Además, puedes suministrar el periodo de notificacion.
                 </p>
                 <p>
                     Comandos del bot:
@@ -177,10 +210,8 @@
         </div>
         <div class="PanelControl">
             <h1>Configuración del Bot</h1>
-            <button onclick="location.href='/bot/eliminar'">Eliminar Bot</button>
+            <button id="eliminarBot" onclick="location.href='/bot/eliminar'">Eliminar Bot</button>
             <form action="/api/configBot" method="POST">
-                <label for="notificaciones">Edicion notificación</label>
-                <br>
                 <label for="voltaje">Voltaje</label>
                 <input type="checkbox" name="voltaje_active" id="voltaje" >
                 <input type="Text" name="voltaje_valor" id="voltaje_limite" placeholder="350V">
@@ -200,7 +231,7 @@
             </form>
         </div>
     </div>
-        <div class="button-container">
+    <div class="button-container">
         <a class="back-button" onclick="history.back()">Volver</a></div>
 {% endif %}
 </body>
