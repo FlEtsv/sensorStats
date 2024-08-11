@@ -23,6 +23,9 @@ def bot():
         phone_number = request.form['Numero']
         try:
             db_methods.create_database_users()
+            db_methods.create_database_config()
+            db_methods.introducirDatosConfigDefecto()
+
             verification_code = db_methods.guardarDatosWeb(name, token, phone_number)
             return redirect(url_for('bot_v.success_no_cache', codigoVerificacion=verification_code))
         except Exception as e:

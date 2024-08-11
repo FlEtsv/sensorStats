@@ -1,9 +1,11 @@
-from auxiliar.manipulacionDatos.BD.servicesBD.sqlite import DatabaseService
+
+from auxiliar.manipulacionDatos.BD.servicesBD.sqlite import DatabaseService, Database
 
 
 class MetodosDatabase:
     def __init__(self):
-        self.service = DatabaseService()
+        self.service = Database()
+        self.dataService = DatabaseService()
 
     def create_database_users(self):
         try:
@@ -24,7 +26,7 @@ class MetodosDatabase:
     def introducirDatosConfigDefecto(self):
         try:
             print("Introducing default config data in MetodosDatabase")
-            self.service.introducir_datos_config_defecto()
+            self.dataService.introducir_datos_config_defecto()
             print("Default config data introduced successfully in MetodosDatabase")
         except Exception as e:
             print(f"Error in introducirDatosConfigDefecto: {e}")
@@ -32,7 +34,7 @@ class MetodosDatabase:
     def obtenerDatoConfig(self, name):
         try:
             print(f"Obtaining config data for {name} in MetodosDatabase")
-            result = self.service.obtener_dato_config(name)
+            result = self.dataService.obtener_dato_config(name)
             print(f"Config data obtained for {name} in MetodosDatabase: {result}")
             return result
         except Exception as e:
@@ -42,7 +44,7 @@ class MetodosDatabase:
     def guardarDatoConfig(self, name, value_limit, is_active):
         try:
             print(f"Saving config data for {name} in MetodosDatabase")
-            self.service.guardar_dato_config(name, value_limit, is_active)
+            self.dataService.guardar_dato_config(name, value_limit, is_active)
             print("Config data saved successfully in MetodosDatabase")
         except Exception as e:
             print(f"Error in guardarDatoConfig: {e}")
@@ -50,7 +52,7 @@ class MetodosDatabase:
     def guardarDatosWeb(self, name, token, phone_number):
         try:
             print(f"Saving web data for {name} in MetodosDatabase")
-            result = self.service.guardar_datos_web(name, token, phone_number)
+            result = self.dataService.guardar_datos_web(name, token, phone_number)
             print(f"Web data saved for {name} in MetodosDatabase: {result}")
             return result
         except Exception as e:
@@ -60,7 +62,7 @@ class MetodosDatabase:
     def verificarConexionBaseDatos(self):
         try:
             print("Verifying database connection in MetodosDatabase")
-            result = self.service.verificar_conexion_base_datos()
+            result = self.dataService.verificar_conexion_base_datos()
             print(f"Database connection verified in MetodosDatabase: {result}")
             return result
         except Exception as e:
@@ -70,7 +72,7 @@ class MetodosDatabase:
     def verificarToken(self):
         try:
             print("Verifying token in MetodosDatabase")
-            result = self.service.verificar_token()
+            result = self.dataService.verificar_token()
             print(f"Token verified in MetodosDatabase: {result}")
             return result
         except Exception as e:
@@ -80,7 +82,7 @@ class MetodosDatabase:
     def eliminarDatos(self):
         try:
             print("Deleting data in MetodosDatabase")
-            self.service.eliminar_datos()
+            self.dataService.eliminar_datos()
             print("Data deleted successfully in MetodosDatabase")
         except Exception as e:
             print(f"Error in eliminarDatos: {e}")

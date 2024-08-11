@@ -57,3 +57,5 @@ class ReloadData:
         thread.start()
 
         logging.debug("Timer started")
+
+

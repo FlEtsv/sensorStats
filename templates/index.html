@@ -82,26 +82,70 @@
             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
         .form-container {
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .form-container label {
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
         .form-container input {
             padding: 10px;
             font-size: 1rem;
-            border: 1px solid #ccc;
+            border: 2px solid #ccc;
             border-radius: 5px;
-            width: 300px;
+            margin-bottom: 15px;
+            width: 95%;
         }
-        .form-container button {
-            padding: 10px 20px;
+
+        .form-container #conectar_button {
+
+            padding: 20px 5px;
+            width: 210px;
+            margin-left: 100px;
             font-size: 1rem;
             border: none;
             border-radius: 5px;
             background-color: #358fd1;
             color: white;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .form-container button:hover {
-            background-color: #358fd1;
+
+        .form-container #conectar_button:hover {
+            background-color: #2a6fa1;
+        }
+
+        .form-container .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .form-container .form-group label {
+            flex: 1;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .form-container .form-group input {
+            flex: 2;
         }
         .loader {
             border: 16px solid #f3f3f3;
@@ -119,7 +163,7 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 20px;
+            margin-top: 50px;
         }
         .data-links a {
             padding: 10px 20px;
@@ -149,13 +193,37 @@
         }
         .titule {
             text-align: center;
-            margin-top: 20px;
+            background: linear-gradient(135deg, #1e6bb8, #1ea6b8);
+            width: max(100%, 1920px);
+            margin-bottom: 35px;
+        }
+        #ultimaActualizacion {
+            font-family: 'Arial', sans-serif;
+            font-size: 1.2em;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 10px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            animation: fadeIn 1s ease-in-out, pulse 2s infinite;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .titule h1 {
             font-family: 'Arial', sans-serif;
             font-size: 2.5em;
-            color: #333;
+            color: #f2f2f2;
         }
 
         .titule p {
@@ -178,7 +246,113 @@
             animation: fadeIn 1s ease-in-out;
 
         }
+
+
+
+
         @media (max-width: 768px) {
+
+
+            body{
+                height: auto;
+                width: 590px;
+            }
+            .titule {
+                margin-top: 0px;
+                width: 600px;
+                margin-bottom: 35px;
+                margin-left: 10px;
+                padding-top: 15px;
+
+
+            }
+            .titule h1{
+                font-size: 4em;
+                color: #f2f2f2;
+            }
+            #ultimaActualizacion {
+                font-size: 1em;
+                padding: 5px 10px;
+                border-radius: 5px;
+                top: 5px;
+                right: 5px;
+            }
+            .form-container {
+                width: 500px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .form-container form {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .form-container label {
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            .form-container input {
+                padding: 10px;
+                font-size: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-bottom: 15px;
+                width: 95%;
+            }
+
+            .form-container #conectar_button {
+                height: 52px;
+                width: 222px;
+                font-size: 1rem;
+                border: none;
+                border-radius: 5px;
+                background-color: #358fd1;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+                padding-top: 5px;
+                padding-bottom: 5px;
+
+                margin-left: 150px;
+            }
+
+            .form-container button:hover {
+                background-color: #2a6fa1;
+            }
+
+            .form-container .form-group {
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+            }
+
+            .form-container .form-group label {
+                flex: 1;
+                text-align: right;
+                margin-right: 10px;
+            }
+
+            .form-container .form-group input {
+                flex: 2;
+            }
+            .data-container {
+                grid-template-columns: repeat(1, 1fr);
+                gap: 20px;
+            }
+
+            .mapaYBot{
+                padding-bottom: 10px;
+                height: 480px;
+                width: 590px;
+            }
             .data-container {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 20px;
@@ -194,17 +368,7 @@
                 margin-right: 0;
                 margin-bottom: 10px;
             }
-            .data-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                margin-bottom: 60px;
-            }
-            .data-links a {
-                padding: 8px 18px;
-                font-size: 0.8rem;
-                flex-basis: calc(50% - 20px);
-                margin-bottom: 15px;
-            }
+
             footer {
                 display: flex;
                 justify-content: center;
@@ -235,12 +399,12 @@
     <p id="ultimaActualizacion">Ultima Actualizacion: {{ ultimaActualizacion }}</p>
 </div>
 <div class="form-container">
-    <form method="POST" action="/connect" id="form">
+    <form id="formularioIpPort" method="POST" action="/connect" >
         <label for="ip_port">IP/Port:</label>
         <input type="password" id="ip_port" name="ip_port" value="{{ ip_port }}" required>
         <label for="vin">VIN:</label>
         <input type="password" id="vin" name="vin" value="{{ vin }}" required>
-        <input type="submit" value="Conectar">
+        <input id="conectar_button" type="submit" value="Conectar">
     </form>
 </div>
 <div class="data-container">
@@ -298,16 +462,6 @@
     <div class="contenedorBotonBot">
         <p>¿Quieres tener los datos de tu coche por Telegram?</p>
         <button class="botonBot" onclick="location.href='/configuracionBot'">Configurar Bot</button>
-</div>
-<div class="data-links">
-    <a href="/data/battery_voltage">Historial voltaje</a>
-    <a href="/data/autonomy">Historial autonomía</a>
-    <a href="/data/level">Historial nivel batería</a>
-    <a href="/data/air_temp">Historial temperatura</a>
-    <a href="/data/acceleration">Historial aceleración</a>
-    <a href="/data/speed">Historial velocidad</a>
-    <a href="/data/mileage">Historial kilometraje</a>
-
 </div>
 <div id="loading" style="display: none;">
     <div class="loader"></div>

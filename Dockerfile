@@ -17,6 +17,8 @@ COPY . .
 # Instala las dependencias de Python
 RUN pip install -r requirements.txt
 
+
+
 # Expone el puerto que la aplicación usará
 EXPOSE 8080
 

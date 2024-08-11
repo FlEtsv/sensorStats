@@ -95,3 +95,4 @@ def get_data_bot():
                 'coordenadas': [0, 0],
                 'test_value': 12  # Add a test value for the test case
             }), 200
+
