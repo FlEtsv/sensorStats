@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dialogo</title>
     <style>
         body {
@@ -92,29 +92,40 @@
         }
 
         @keyframes parpadeo {
-            0%, 100% {
+            0%, 50% {
                 opacity: 1;
                 transform: scale(1);
             }
-            50% {
-                opacity: 0.5;
-                transform: scale(1.2);
+            75% {
+                opacity: 0.8;
+                transform: scale(1.4);
+            }
+            100% {
+                opacity: 1; /* Ensure it returns to full opacity */
+                transform: scale(0.8);
             }
         }
 
         .parpadeo {
-            animation: parpadeo 1s infinite;
+            animation: parpadeo 3s infinite;
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .parpadeo {
+                animation: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="dialog">
-        <h1>{{ tipoAviso }}</h1>
-        <p id="message">{{ mensajeUsuario }}</p>
-        <p>Tu código de verificación es: <strong class="parpadeo">{{ codigoVerificacion }}</strong></p>
-        <button>
-            <a href="/" method="GET">Aceptar</a>
-        </button>
-    </div>
+<div class="dialog">
+    <h1>{{ tipoAviso }}</h1>
+    <p id="message">{{ mensajeUsuario }}</p>
+    <p>Tu código de verificación es: <strong class="parpadeo">{{ codigoVerificacion }}</strong></p>
+    <button>
+        <a href="/" method="GET">Aceptar</a>
+    </button>
+</div>
 </body>
 </html>

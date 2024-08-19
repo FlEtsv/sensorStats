@@ -129,8 +129,8 @@ def extract_vehicle_data(data):
     air_temp = environment.get('air', {}).get('temp', 0)
     luminosity_day = environment.get('luminosity', {}).get('day', False)
     kinetic = data.get('kinetic', {})
-    acceleration = kinetic.get('acceleration', 0)
-    speed = kinetic.get('speed', 0)
+    acceleration = kinetic.get('acceleration', 0) if kinetic.get('acceleration') is not None else 0
+    speed = kinetic.get('speed', 0) if kinetic.get('speed') is not None else 0
     preconditioning = data.get('preconditionning', {}).get('air_conditioning', {})
     preconditioning_status = preconditioning.get('status', "N/A")
     mileage = data.get('timed_odometer', {}).get('mileage', 0)
