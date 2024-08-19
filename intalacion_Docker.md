@@ -1,4 +1,4 @@
-# Guía de Instalación de SensorStats en Docker
+# Guía de Instalación de SensorStats en Docker 🤖
 
 ## Requisitos Previos
 
@@ -9,14 +9,14 @@
 
 ### 1. Buscar la Imagen en Docker Hub
 
-- Ingresa a [Docker Hub](https://hub.docker.com) y busca la imagen `fletsv/sensorstatsamd64`.
+- Ingresa a [Docker Hub](https://hub.docker.com) y busca la imagen `fletsv/sensorstatsamd64` o pincha ***[aquí](https://hub.docker.com/repository/docker/fletsv/sensorstatsamd64)***
 
 ### 2. Clonar la Imagen
 
 - Desde el gestor cliente de Docker o la línea de comandos, clona la imagen:
 
-
 `docker pull fletsv/sensorstatsamd64`
+
 
 ### 3. Crear Carpetas Necesarias
 Esta carpeta serviran a la apliacion de almacenamiento.
@@ -39,7 +39,7 @@ Esta carpeta serviran a la apliacion de almacenamiento.
 - Mapea la carpeta `data` (la que creaste anteriormente)dentro del contenedor en volumen y dentro del contenedor como `/app/data/historialDatos`.
 - Inicia el contenedor.
 
-  ⚠️ WARNING: si va a instalar el bot de telegram necesitara el conjunto de rutas marcadas anteriormenta para el bot
+  > ⚠️ WARNING: si va a instalar el bot de telegram necesitara el conjunto de rutas marcadas anteriormenta para el bot
 
 ## Acceso a la Aplicación
 
@@ -51,6 +51,6 @@ Esta carpeta serviran a la apliacion de almacenamiento.
 - Esta configuración se almacenará para futuros usos.
 
 
-## Avisos y configuracion de bot Telegram.
+## Avisos y configuracion de ***[Bot Telegram](https://github.com/FlEtsv/botTelegram)***.
   el bot de telegram necesita esta instalación para funcionar, el bot de telegram funciona en cualquier parte del mundo, pero es seguro porque verifica siempre el Chat.Id que esta verificado, por     lo tanto solo usted "USUARIO VERIFICADO" podrá acceder al contenido del mismo.
   ¡Y eso es todo! Ahora deberías tener `SensorStats` funcionando en tu contenedor Docker.
