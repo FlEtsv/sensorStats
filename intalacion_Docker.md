@@ -7,7 +7,7 @@
 
 ## Pasos de Instalación
 
-### 1. Buscar la Imagen en Docker Hub
+### 1. Buscar la Imagen en Docker Hub 👓
 
 - Ingresa a [Docker Hub](https://hub.docker.com) y busca la imagen `fletsv/sensorstatsamd64` o pincha ***[aquí](https://hub.docker.com/repository/docker/fletsv/sensorstatsamd64)***
 
