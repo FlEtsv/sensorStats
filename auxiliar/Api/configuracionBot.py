@@ -113,4 +113,6 @@ def llevarDialogo(tipoAviso, mensajeUsuario):
 @api_cb.route('/api/get_config_bot/<name>', methods=['GET'])
 def get_config_bot(name):
     data = db_methods.obtenerDatoConfig(name)
+    print(f"Data from DB: {data}")
     return jsonify(data)
+
