@@ -1,4 +1,4 @@
-# sensorStats
+# sensorStats 📅
 
 ## Descripción
 
@@ -32,6 +32,8 @@ La aplicación recupera datos de sensores del vehículo desde la API de psaCarCo
   - Luminosidad del día
   - Estado del preacondicionamiento
 - `data.html`: Esta plantilla presenta los datos mas a detalle, nos muestra una tabla que nos facilita el formato Fecha-Valor, asi como un grafico de barras para poder ver visualmente la evolucion.
+- `BotDisplay.html`: Esta plantilla es la presentación y configuracion del Bot.
+- 
 
 ## Tecnologías Utilizadas
 
