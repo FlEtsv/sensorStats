@@ -28,6 +28,7 @@ def config_bot():
         intVoltaje = int(voltaje_value)
         if voltaje_value is None:
             return dialogowarningRequired("voltaje"), 200
+        db_methods.eliminarDatosConfig("voltaje")
         db_methods.guardarDatoConfig("voltaje", intVoltaje, True)
         try:
             float(voltaje_value)
@@ -40,6 +41,7 @@ def config_bot():
         intBateria = int(bateria_value)
         if bateria_value is None:
             return dialogowarningRequired("bateria"), 200
+        db_methods.eliminarDatosConfig("bateria")
         db_methods.guardarDatoConfig("bateria", intBateria, True)
         try:
             float(bateria_value)
@@ -52,6 +54,7 @@ def config_bot():
         intTemperatura = int(temperatura_value)
         if temperatura_value is None:
             return dialogowarningRequired("temperatura"), 200
+        db_methods.eliminarDatosConfig("temperatura")
         db_methods.guardarDatoConfig("temperatura", intTemperatura, True)
         try:
             float(temperatura_value)
@@ -64,6 +67,7 @@ def config_bot():
         intAutonomia = int(autonomia_value)
         if autonomia_value is None:
             return dialogowarningRequired("autonomia"), 200
+        db_methods.eliminarDatosConfig("autonomia")
         db_methods.guardarDatoConfig("autonomia", intAutonomia, True)
         try:
             float(autonomia_value)
@@ -76,6 +80,7 @@ def config_bot():
         intKilometraje = int(kilometraje_value)
         if kilometraje_value is None:
             return dialogowarningRequired("kilometraje"), 200
+        db_methods.eliminarDatosConfig("kilometraje")
         db_methods.guardarDatoConfig("kilometraje", intKilometraje, True)
         try:
             float(kilometraje_value)

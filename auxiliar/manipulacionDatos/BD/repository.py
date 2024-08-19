@@ -49,6 +49,14 @@ class MetodosDatabase:
         except Exception as e:
             print(f"Error in guardarDatoConfig: {e}")
 
+    def eliminarDatosConfig(self, name):
+        try:
+            print(f"Deleting config data for {name} in MetodosDatabase")
+            self.dataService.eliminar_datos_config(name)
+            print("Config data deleted successfully in MetodosDatabase")
+        except Exception as e:
+            print(f"Error in eliminarDatosConfig: {e}")
+
     def guardarDatosWeb(self, name, token, phone_number):
         try:
             print(f"Saving web data for {name} in MetodosDatabase")

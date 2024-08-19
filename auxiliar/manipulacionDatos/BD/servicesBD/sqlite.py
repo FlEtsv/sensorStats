@@ -93,7 +93,11 @@ class DatabaseService:
         ''', (value_limit, is_active, name))
         conn.commit()
         conn.close()
-
+    def eliminar_datos_config(self, name):
+        conn, cursor = self.database.conectarBaseDatos()
+        cursor.execute('DELETE FROM config WHERE name_variable = ?', (name,))
+        conn.commit()
+        conn.close()
     def guardar_datos_web(self, name, token, phone_number):
         codigo_verificacion = generarCodigoAleatorio()
         conn, cursor = self.database.conectarBaseDatos()
